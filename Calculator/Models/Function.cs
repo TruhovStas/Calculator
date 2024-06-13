@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class Function
+    public class Function
     {
     }
 }
