@@ -8,5 +8,17 @@ namespace Calculator.Models
 {
     internal class Variable
     {
+        string name;
+
+        double value;
+        public string Name { get { return name; } }
+            public double Value { get { return value; } }
+
+        Variable(string Expression)
+        {
+            this.name = Expression.Remove(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
+            this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('='),Expression.Length - Expression.IndexOf("=")));
+        }
+        
     }
 }
