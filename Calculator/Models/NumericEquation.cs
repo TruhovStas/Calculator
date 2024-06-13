@@ -44,6 +44,12 @@ namespace Calculator.Models
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Separates equation on every small part for its easy processing.
+		/// Divides brackets, operators and fractional numbers
+		/// </summary>
+		/// <param name="equation">current equation</param>
+		/// <returns>List of tokenized parts of equation</returns>
 		private List<string> SeparateEquation(string equation)
 		{
 			List<string> result = new List<string>();
