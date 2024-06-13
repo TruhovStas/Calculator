@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameController;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +12,12 @@ namespace Calculator.Models
 		public List<string> infixEquation { get; private set; }
 		public List<string> postfixEquation { get; private set; }
 
+		private List<string> standart_operators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
+
 
 		public NumericEquation(string equation)
 		{
-			this.infixEquation = SeparateEquation(equation);
+			this.infixEquation = SeparateEquation(equation).ToList();
 			this.postfixEquation = Convert2PostfixNotation();
 		}
 
@@ -42,11 +45,10 @@ namespace Calculator.Models
 			throw new NotImplementedException();
 		}
 
-		private List<string> SeparateEquation(string equation)
+		private IEnumerable<string> SeparateEquation(string equation)
 		{
-			//use this infix eq
-			//get number here
-			throw new NotImplementedException();
+
+
 		}
 
 		private double GetNumber() // used for getting fractional numbers
