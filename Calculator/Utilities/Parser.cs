@@ -27,19 +27,19 @@ namespace Calculator.Utilities
         {
             string name = "";
             bool letterFound = false;
-            for(int i = 0; i < Expression.Length; ++i)
+            for (int i = 0; i < Expression.Length; ++i)
             {
-                if(!letterFound && Expression[i].IsLetter)
+                if (!letterFound && Expression[i].IsLetter)
                 {
                     letterFound = true;
                     name += Expression[i];
                 }
-                else if(letterFound && Expression[i] == '(')
+                else if (letterFound && Expression[i] == '(')
                 {
                     letterFound = false;
                     name = "";
                 }
-                else if(letterFound && !Expression[i].IsLetter)
+                else if (letterFound && !Expression[i].IsLetter)
                 {
                     try
                     {
@@ -48,7 +48,7 @@ namespace Calculator.Utilities
                         name = "";
                         letterFound = false;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         // TODO: Обработать ошибку
                         return null;
@@ -93,6 +93,24 @@ namespace Calculator.Utilities
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Method <c>AddInDictionary</c> puts the function and variables into dictionary .
+        /// </summary>
+
+        void AddInDictionary(string Expression)
+        {
+
+            if (Expression.Contains('=') && Expression.Contains('('))
+            {
+                Function Func = new Function(Expression, functionDictionary);
+            }
+            else if (Expression.Contains('=') && !Expression.Contains('('))
+            {
+                Variable Func = new Variable(Expression, variableDictionary);
+            }
+
         }
     }
 }
