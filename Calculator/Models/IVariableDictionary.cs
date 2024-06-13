@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal interface IVariableDictionary
+    public interface IVariableDictionary
     {
-        public void Add(Variable func);
-        public Variable GetVariable(string name);
+        void Add(Variable func);
+        Variable GetVariable(string name);
     }
 }

@@ -14,17 +14,21 @@ namespace Calculator.Models
         public string Name { get { return name; } }
         public double Value { get { return value; } }
 
-        Variable(string Expression)
+        public Variable(string Expression)
         {
-            this.name = Expression.Remove(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf("=")));
+            ParseExpression(Expression);
         }
 
-        Variable(string Expression, VariableDictionary dict)
+        public Variable(string Expression, VariableDictionary dict)
+        {
+            ParseExpression(Expression);
+            dict.Add(this);
+        }
+
+        private void ParseExpression(string Expression)
         {
             this.name = Expression.Remove(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
             this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf("=")));
-            dict.Add(this);
         }
 
         public string GetToStringValue()
