@@ -8,39 +8,49 @@ namespace Calculator.Models
 {
 	public class NumericEquation
 	{
-		public string infixEquation { get; private set; }
-		public string postfixEquation { get; private set; }
+		public List<string> infixEquation { get; private set; }
+		public List<string> postfixEquation { get; private set; }
 
 
 		public NumericEquation(string equation)
 		{
-			this.infixEquation = equation;
-			this.postfixEquation = Convert2Postfix();
-
+			this.infixEquation = SeparateEquation(equation);
+			this.postfixEquation = Convert2PostfixNotation();
 		}
 
 
-		private string Convert2Postfix()
+		private List<string> Convert2PostfixNotation() // dont forget to copy list
 		{
-			List<string> tokenizedEquation = SeparateEquation();
-
-			List<string> outputString = new List<string>();
-			Stack<string> symbolBuffer = new Stack<string>(); // needs for temporary keeping symbols 
-
-			foreach (var token in infixNotationString)
-			{
-
-			}
 			throw new NotImplementedException();
-			//get number must be here
-			return outputString.ToString();
+			//List<string> output = new List<string>();
+			//Stack<string> symbolBuffer = new Stack<string>(); // needs for temporary keeping symbols 
+
+			//foreach (var token in )
+			//{
+
+			//}
+			//throw new NotImplementedException();
+			////get number must be here
+			//return output;
 		}
 
+		public double GetResult() => CalculatePostfixNotationEquation();
 
-		private static List<string> SeparateEquation()
+
+		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
+		{
+			throw new NotImplementedException();
+		}
+
+		private List<string> SeparateEquation(string equation)
 		{
 			//use this infix eq
 			//get number here
+			throw new NotImplementedException();
+		}
+
+		private double GetNumber() // used for getting fractional numbers
+		{
 			throw new NotImplementedException();
 		}
 	}
