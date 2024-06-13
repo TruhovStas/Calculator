@@ -21,16 +21,16 @@ namespace Calculator.Models
         Function(string Expression)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
-            this.body = Expression.Remove(0, Expression.IndexOf('='));
-            parametres = Expression.Remove(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ","").Split(',').ToList();
+            this.body = Expression.Substring(Expression.IndexOf('='),Expression.Length- Expression.IndexOf('='));
+            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ","").Split(',').ToList();
         }
 
         Function(string Expression,FunctionDictionary dict)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
-            this.body = Expression.Remove(0, Expression.IndexOf('='));
-            parametres = Expression.Remove(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
-            
+            this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
+            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+
 
         }
 
