@@ -8,6 +8,5 @@ namespace Calculator.Models
 {
     internal class FunctionDictionary
     {
-        
     }
 }

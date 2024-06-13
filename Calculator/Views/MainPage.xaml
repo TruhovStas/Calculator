@@ -10,26 +10,36 @@
         <!-- Button -->
         <Button Text="Выполнить" Clicked="OnExecuteButtonClicked" />
 
-        <!-- Grid to hold the two ListViews -->
-        <Grid ColumnDefinitions="*,*">
+        <!-- Grid to hold the two ListViews with labels and frames -->
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*">
 
-            <!-- Left ListView -->
-            <ListView x:Name="LeftListBox" Grid.Column="0">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <!-- Left Label -->
+            <Label Text="Переменные" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" />
 
-            <!-- Right ListView -->
-            <ListView x:Name="RightListBox" Grid.Column="1">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding}" />
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <!-- Right Label -->
+            <Label Text="Функции" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" />
+
+            <!-- Frame for Left ListView -->
+            <Frame Grid.Column="0" Grid.Row="1" BorderColor="Black" CornerRadius="5" Padding="0">
+                <ListView x:Name="LeftListBox">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
+
+            <!-- Frame for Right ListView -->
+            <Frame Grid.Column="1" Grid.Row="1" BorderColor="Black" CornerRadius="5" Padding="0">
+                <ListView x:Name="RightListBox">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding}" />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
 
         </Grid>
     </StackLayout>
