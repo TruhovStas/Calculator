@@ -17,7 +17,7 @@ namespace Calculator.Models
 
 		public NumericEquation(string equation)
 		{
-			this.infixEquation = SeparateEquation(equation).ToList();
+			this.infixEquation = SeparateEquation(equation);
 			this.postfixEquation = Convert2PostfixNotation();
 		}
 
@@ -45,13 +45,34 @@ namespace Calculator.Models
 			throw new NotImplementedException();
 		}
 
-		private IEnumerable<string> SeparateEquation(string equation)
+		private List<string> SeparateEquation(string equation)
 		{
+			List<string> result = new List<string>();
 
+			int pos = 0;
+			while (pos < equation.Length)
+			{
+				string s = string.Empty + equation[pos];
+				if (!standart_operators.Contains(equation[pos].ToString()))
+				{
+					if (Char.IsDigit(equation[pos]))
+						for (int i = pos + 1; i < equation.Length &&
+							(Char.IsDigit(equation[i]) || equation[i] == ',' || equation[i] == '.'); i++)
+							s += equation[i];
+					else if (Char.IsLetter(equation[pos]))
+						for (int i = pos + 1; i < equation.Length &&
+							(Char.IsLetter(equation[i]) || Char.IsDigit(equation[i])); i++)
+							s += equation[i];
+				}
+				result.Add(s);
+				pos += s.Length;
+			}
 
+			// add remove text
+			return result;
 		}
 
-		private double GetNumber() // used for getting fractional numbers
+		private double GetFullNumber(string equation, ref int pos) // used for getting fractional numbers
 		{
 			throw new NotImplementedException();
 		}
