@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class VariableDictionary
+    internal class VariableDictionary : IVariableDictionary
     {
         private Dictionary<string, Variable> dict;
         VariableDictionary()
@@ -17,7 +17,7 @@ namespace Calculator.Models
         {
             dict[func.Name] = func;
         }
-        public Variable GetFunction(string name)
+        public Variable GetVariable(string name)
         {
             return dict[name];
         }
