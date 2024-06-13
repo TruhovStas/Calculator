@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +11,18 @@ namespace Calculator.Models
 {
     internal class FunctionDictionary
     {
-        
+        private Dictionary<string, Function> dict;
+        FunctionDictionary()
+        {
+            dict = new Dictionary<string, Function>();
+        }
+        public void Add(Function func)
+        {
+            dict[func.Name] = func;
+        }
+        public Function GetFunction(string name) 
+        {
+            return dict[name];
+        }
     }
 }
