@@ -8,5 +8,16 @@ namespace Calculator.Models
 {
     internal class Function
     {
+       private string name=null;
+
+       private List<string> vars;
+
+       private string body;    
+
+        public string Name { get { return name; } }
+
+        public string Body { get { return body; } }
+
+
     }
 }
