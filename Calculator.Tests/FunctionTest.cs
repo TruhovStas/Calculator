@@ -8,5 +8,6 @@ namespace Calculator.Tests
 {
     internal class FunctionTest
     {
+
     }
 }

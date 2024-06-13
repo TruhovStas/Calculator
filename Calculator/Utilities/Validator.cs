@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Utilities
 {
-    public static class Validator
+    public class Validator
     {
     }
 }
