@@ -76,11 +76,6 @@ namespace Calculator.Models
 			// add remove text
 			return result;
 		}
-
-		private double GetFullNumber(string equation, ref int pos) // used for getting fractional numbers
-		{
-			throw new NotImplementedException();
-		}
 	}
 
 }
