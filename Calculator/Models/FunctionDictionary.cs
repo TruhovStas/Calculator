@@ -12,7 +12,7 @@ namespace Calculator.Models
     internal class FunctionDictionary : IFunctionDictionary
     {
         private Dictionary<string, Function> dict;
-        FunctionDictionary()
+        public FunctionDictionary()
         {
             dict = new Dictionary<string, Function>();
         }

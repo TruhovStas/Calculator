@@ -9,7 +9,7 @@ namespace Calculator.Models
     internal class VariableDictionary : IVariableDictionary
     {
         private Dictionary<string, Variable> dict;
-        VariableDictionary()
+        public VariableDictionary()
         {
             dict = new Dictionary<string, Variable>();
         }

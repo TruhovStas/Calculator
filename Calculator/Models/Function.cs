@@ -18,19 +18,21 @@ namespace Calculator.Models
 
         public string Body { get { return body; } }
 
-        Function(string Expression)
+        public Function(string Expression)
         {
-            this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
-            this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+            ParseExpression(Expression);
         }
 
-        Function(string Expression, FunctionDictionary dict)
+        public Function(string Expression, FunctionDictionary dict)
+        {
+            ParseExpression(Expression);
+            dict.Add(this);
+        }
+        private void ParseExpression(string Expression)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
             this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
-            dict.Add(this);
+            this.parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
         }
     }
 }
