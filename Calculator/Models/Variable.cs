@@ -20,6 +20,13 @@ namespace Calculator.Models
             this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf("=")));
         }
 
+        Variable(string Expression, VariableDictionary dict)
+        {
+            this.name = Expression.Remove(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
+            this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf("=")));
+            dict.Add(this);
+        }
+
         public string GetToStringValue()
         {
             return Convert.ToString(this.value);
