@@ -8,11 +8,11 @@ namespace Calculator.Models
 {
     public class Function
     {
-       private string name=null;
+        private string name = null;
 
-       private List<string> parametres;
+        private List<string> parametres;
 
-       private string body;    
+        private string body;
 
         public string Name { get { return name; } }
 
@@ -21,18 +21,20 @@ namespace Calculator.Models
         Function(string Expression)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
-            this.body = Expression.Substring(Expression.IndexOf('='),Expression.Length- Expression.IndexOf('='));
-            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ","").Split(',').ToList();
+            this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
+            parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
         }
 
-        Function(string Expression,FunctionDictionary dict)
+        Function(string Expression, FunctionDictionary dict)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
             this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
             parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
-
-
         }
 
+        public string GetToStringFunc()
+        {
+            return "ssd";
+        }
     }
 }
