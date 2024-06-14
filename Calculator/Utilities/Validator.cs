@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Calculator.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,19 @@ namespace Calculator.Utilities
 {
     public static class Validator
     {
-        public static bool IsCorrectUserFunction()
+        public static bool IsCorrectUserFunction(Function function)
         {
             throw new NotImplementedException();
         }
 
 
-		public static bool IsCorrectUserVariable()
+		public static bool IsCorrectUserVariable(Variable variable)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		public static bool IsCorrectMathExpression()
+		public static bool IsCorrectMathExpression(string Expression)
 		{
 			throw new NotImplementedException();
 		}
