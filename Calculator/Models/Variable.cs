@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class Variable
+    public class Variable
     {
         private string name;
 
@@ -27,8 +27,8 @@ namespace Calculator.Models
 
         private void ParseExpression(string Expression)
         {
-            this.name = Expression.Remove(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('=') + 1, Expression.Length - Expression.IndexOf("=")));
+            this.name = Expression.Remove(Expression.IndexOf('='));
+            this.value = Convert.ToDouble(Expression.Substring(Expression.IndexOf('=') + 1));
         }
 
         public string GetToStringValue()
