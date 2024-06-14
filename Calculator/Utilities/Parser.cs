@@ -20,7 +20,8 @@ namespace Calculator.Utilities
         public void Parse(string Expression)
         {
             Expression = Expression.Replace(" ", "");
-            if(AddInDictionary(Expression)) 
+            Expression = Expression.Replace(".", ",");
+            if (AddInDictionary(Expression)) 
             {
                 return;
             }
