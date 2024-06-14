@@ -1,26 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Calculator.MainPage">
+             x:Class="YourNamespace.MainPage">
 
-    <StackLayout Padding="10">
+    <StackLayout Padding="10" Spacing="10">
         <!-- Text input field -->
         <Entry x:Name="InputEntry" Placeholder="Введите текст" />
 
         <!-- Button -->
-        <Button Text="Выполнить" Clicked="OnExecuteButtonClicked" />
+        <Button Text="Выполнить"
+                BackgroundColor="#9966cc"
+                Clicked="OnExecuteButtonClicked" 
+                FontAttributes="Bold"
+                FontSize="Medium"/>
 
         <!-- Grid to hold the two ListViews with labels and frames -->
-        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*">
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*" ColumnSpacing="10">
 
             <!-- Left Label -->
-            <Label Text="Переменные" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" />
+            <Label Text="Левый список" 
+                   Grid.Column="0" Grid.Row="0" 
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="Medium" />
 
             <!-- Right Label -->
-            <Label Text="Функции" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" />
+            <Label Text="Правый список" 
+                   Grid.Column="1" Grid.Row="0" 
+                   HorizontalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="Medium" />
 
             <!-- Frame for Left ListView -->
-            <Frame Grid.Column="0" Grid.Row="1" BorderColor="Black" CornerRadius="5" Padding="0">
+            <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="#9966cc" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="100">
                 <ListView x:Name="LeftListBox">
                     <ListView.ItemTemplate>
                         <DataTemplate>
@@ -31,7 +43,7 @@
             </Frame>
 
             <!-- Frame for Right ListView -->
-            <Frame Grid.Column="1" Grid.Row="1" BorderColor="Black" CornerRadius="5" Padding="0">
+            <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="#9966cc" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="100">
                 <ListView x:Name="RightListBox">
                     <ListView.ItemTemplate>
                         <DataTemplate>
