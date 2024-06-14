@@ -31,8 +31,8 @@ namespace Calculator.Models
         private void ParseExpression(string Expression)
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
-            this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            this.parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+            this.body = Expression.Substring(Expression.IndexOf('=') + 1, Expression.Length - Expression.IndexOf('='));
+            this.parametres = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
         }
     }
 }
