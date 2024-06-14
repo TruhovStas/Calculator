@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,18 @@ namespace Calculator.Models
 		public List<string> infixEquation { get; private set; }
 		public List<string> postfixEquation { get; private set; }
 
-		private List<string> standart_operators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
+		private static List<string> standartOperators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
 
 
 		public NumericEquation(string equation)
 		{
 			this.infixEquation = SeparateEquation(equation);
-			this.postfixEquation = Convert2PostfixNotation();
+			this.postfixEquation = Convert2PostfixNotation(infixEquation);
 		}
 
 
-		private List<string> Convert2PostfixNotation() // dont forget to copy list
+
+		private List<string> Convert2PostfixNotation(List<string> infixEquation) // dont forget to copy list
 		{
 			throw new NotImplementedException();
 			//List<string> output = new List<string>();
@@ -36,13 +38,18 @@ namespace Calculator.Models
 			//return output;
 		}
 
+
+
 		public double GetResult() => CalculatePostfixNotationEquation();
+
 
 
 		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
 		{
 			throw new NotImplementedException();
 		}
+
+
 
 		/// <summary>
 		/// Separates equation on every small part for its easy processing.
@@ -58,7 +65,7 @@ namespace Calculator.Models
 			while (pos < equation.Length)
 			{
 				string s = string.Empty + equation[pos];
-				if (!standart_operators.Contains(equation[pos].ToString()))
+				if (!standartOperators.Contains(equation[pos].ToString()))
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1; i < equation.Length &&
@@ -73,9 +80,18 @@ namespace Calculator.Models
 				pos += s.Length;
 			}
 
-			// add remove text
 			return result;
 		}
+
+		private double ExecuteBinaryOperation(double x, double y, char op) => op switch
+		{
+			'+' => x + y,                  //	Сложение
+			'-' => x - y,                  //	Вычитание
+			'*' => x * y,                  //	Умножение
+			'/' => x / y,                  //	Деление
+			'^' => Math.Pow(x, y), //	Степень
+			_ => 0  //	Возвращает, если не был найден подходящий оператор
+		};
 	}
 
 }
