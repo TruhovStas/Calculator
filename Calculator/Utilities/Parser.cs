@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,9 +13,17 @@ namespace Calculator.Utilities
         private VariavleDictionary variableDictionary;
         private FunctionDictionary functionDictionary;
 
-        public Parser();
+        public Parser() { }
+        /// <summary>
+        /// Method <c>Parse</c> is replacing all variable with their values and all functions with their definitions.
+        /// </summary>
         public void Parse(string Expression)
         {
+            Expression = Expression.Replace(" ", "");
+            if(AddInDictionary(Expression)) 
+            {
+                return;
+            }
             variableDictionary = new VariavleDictionary();
             functionDictionary = new FunctionDictionary();
         }
@@ -25,36 +34,38 @@ namespace Calculator.Utilities
         /// </summary>
         public string ReplaceVariables(string Expression)
         {
-            string name = "";
+            int left_border = 0;
+            int size = 0;
             bool letterFound = false;
             for (int i = 0; i < Expression.Length; ++i)
             {
-                if (!letterFound && Expression[i].IsLetter)
+                if (!letterFound && char.IsLetter(Expression[i]))
                 {
                     letterFound = true;
-                    name += Expression[i];
+                    left_border = i;
+                    size = 1;
+                }
+                else if (letterFound && char.IsLetter(Expression[i]))
+                {
+                    size += 1;
                 }
                 else if (letterFound && Expression[i] == '(')
                 {
                     letterFound = false;
-                    name = "";
                 }
-                else if (letterFound && !Expression[i].IsLetter)
+                else if (letterFound && !char.IsLetter(Expression[i]))
                 {
-                    try
-                    {
-                        Variable variable = variableDictionary.GetVariable();
-                        Expression.Replace(name, variable.Value.ToString());
-                        name = "";
-                        letterFound = false;
-                    }
-                    catch (Exception e)
-                    {
-                        // TODO: Обработать ошибку
-                        return null;
-                    }
+                    string before_insertion = Expression.Substring(0, left_border);
+
+                    string after_insertion = Expression.Substring(left_border + size);
+
+                    Expression = before_insertion + variableDictionary.GetVariable(Expression.Substring(left_border, size)) + after_insertion;
+
+                    letterFound = false;
                 }
             }
+
+            return Expression;
         }
 
         /// <summary>
@@ -62,55 +73,84 @@ namespace Calculator.Utilities
         /// </summary>
         public string ReplaceFunctions(string Expression)
         {
-            string name = "";
+            int left_border = 0;
+            int size = 0;
             bool letterFound = false;
             for (int i = 0; i < Expression.Length; ++i)
             {
-                if (!letterFound && Expression[i].IsLetter)
+                if (!letterFound && char.IsLetter(Expression[i]))
                 {
                     letterFound = true;
-                    name += Expression[i];
+                    left_border = i;
+                    size = 1;
                 }
-                else if (letterFound && !Expression[i].IsLetter)
+                else if (letterFound && char.IsLetter(Expression[i]))
                 {
-                    letterFound = false;
-                    name = "";
+                    size += 1;
                 }
                 else if (letterFound && Expression[i] == '(')
                 {
-                    try
+                    string name = Expression.Substring(left_border, size);
+                    ++size;
+
+                    string parametres = "";
+
+                    for (int j = i + 1; ; ++j)
                     {
-                        Function function = functionDictionary.GetFunction();
-                        string body = function.ReplaceVariables(); // TODO: написать реализацию метода
-                        Expression.Replace(name, body);
-                        name = "";
-                        letterFound = false;
+                        ++size;
+
+                        if (Expression[j] == ')')
+                        {
+                            parametres = Expression.Substring(i + 1, j - i - 1);
+                            i = j;
+                            break;
+                        }
                     }
-                    catch (Exception e)
+
+                    string before_insertion = Expression.Substring(0, left_border);
+
+                    string after_insertion = Expression.Substring(left_border + size);
+
+                    List<string> string_values = parametres.Split(',').ToList();
+
+                    List<double> values = new List<double>();
+
+                    for(int j = 0; j < string_values.Count; ++j)
                     {
-                        // TODO: Обработать ошибку
-                        return null;
+                        values.Add(Convert.ToDouble(string_values[j]));
                     }
+
+                    Expression = before_insertion + '(' + functionDictionary.GetFunction(name).ReplaceVariables(values) + ')' + after_insertion;
+
+                    letterFound = false;
+                }
+                else if (letterFound && !char.IsLetter(Expression[i]))
+                {
+                    letterFound = false;
                 }
             }
+
+            return Expression;
         }
 
         /// <summary>
         /// Method <c>AddInDictionary</c> puts the function and variables into dictionary .
         /// </summary>
-
-        void AddInDictionary(string Expression)
+        private bool AddInDictionary(string Expression)
         {
 
-            if (Expression.Contains('=') && Expression.Contains('('))
+            if (Expression.Contains('=') && Expression.IndexOf('=') != Expression.Length - 1 && Expression.Contains('('))
             {
                 Function Func = new Function(Expression, functionDictionary);
+                return true;
             }
-            else if (Expression.Contains('=') && !Expression.Contains('('))
+            else if (Expression.Contains('=') && Expression.IndexOf('=') != Expression.Length - 1 && !Expression.Contains('('))
             {
                 Variable Func = new Variable(Expression, variableDictionary);
+                return true;
             }
 
+            return false;
         }
     }
 }
