@@ -22,8 +22,12 @@ namespace Calculator.Models
 		}
 
 
-
-		private List<string> Convert2PostfixNotation(List<string> infixEquation) // dont forget to copy list
+		/// <summary>
+		/// Get equation and rewrite it in postfix notation
+		/// </summary>
+		/// <param name="infixEquation">Original equation</param>
+		/// <returns>Postfix variation of equation</returns>
+		private List<string> Convert2PostfixNotation(List<string> infixEquation)
 		{
 			List<string> outputSeparated = new List<string>();
 			Stack<string> stack = new Stack<string>();
@@ -70,7 +74,11 @@ namespace Calculator.Models
 
 
 
-		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
+		/// <summary>
+		/// Calculates an equation written in postfix notation
+		/// </summary>
+		/// <returns>Result of equation</returns>
+		private double CalculatePostfixNotationEquation()
 		{
 			Stack<string> stack = new Stack<string>();
 			Queue<string> queue = new Queue<string>(postfixEquation);
@@ -149,7 +157,7 @@ namespace Calculator.Models
 		/// Separates equation on every small part for its easy processing.
 		/// Divides brackets, operators and fractional numbers
 		/// </summary>
-		/// <param name="equation">current equation</param>
+		/// <param name="equation">Current equation</param>
 		/// <returns>List of tokenized parts of equation</returns>
 		private List<string> SeparateEquation(string equation)
 		{
