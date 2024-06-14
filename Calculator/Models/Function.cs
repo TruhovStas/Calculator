@@ -34,5 +34,38 @@ namespace Calculator.Models
             this.body = Expression.Substring(Expression.IndexOf('=') + 1, Expression.Length - Expression.IndexOf('='));
             this.parametres = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
         }
+
+        public string ReplaceVariable(List<double> values)
+        {
+            string replaced_body = body;
+            int left_border = 0;
+            int size = 0;
+            bool letterFound = false;
+            for (int i = 0; i < body.Length; ++i)
+            {
+                if (!letterFound && char.IsLetter(body[i]))
+                {
+                    letterFound = true;
+                    left_border = i;
+                    size = 1;
+                }
+                else if (letterFound && char.IsLetter(body[i]))
+                {
+                    size += 1;
+                }
+                else if (letterFound && !char.IsLetter(body[i]))
+                {
+                    string before_insertion = replaced_body.Substring(0, left_border);
+
+                    string after_insertion = replaced_body.Substring(left_border + size);
+
+                    replaced_body = before_insertion + values[parametres.IndexOf(replaced_body.Substring(left_border, size - 1))] + after_insertion;
+
+                    letterFound = false;
+                }
+            }
+            
+            return replaced_body;
+        }
     }
 }
