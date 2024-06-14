@@ -44,14 +44,14 @@
             <!-- Grid to hold the two ListViews with labels and frames -->
             <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*" ColumnSpacing="10">
                 <!-- Left Label -->
-                <Label Text="Левый список" 
+                <Label Text="Переменные" 
                        Grid.Column="0" Grid.Row="0" 
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
                        FontSize="Medium" />
 
                 <!-- Right Label -->
-                <Label Text="Правый список" 
+                <Label Text="Функции" 
                        Grid.Column="1" Grid.Row="0" 
                        HorizontalOptions="Center"
                        FontAttributes="Bold"
