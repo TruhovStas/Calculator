@@ -183,12 +183,12 @@ namespace Calculator.Models
 		{
 			switch (op)
 			{
-				case "+": return x + y;                  //    Сложение
-				case "-": return x - y;             //    Вычитание
-				case "*": return x * y;                  //    Умножение
-				case "/": return x / y;                  //    Деление
-				case "^": return Math.Pow(x, y); //    Степень
-				default: return 0;  //	Возвращает, если не был найден подходящий оператор
+				case "+": return x + y; 
+				case "-": return x - y;
+				case "*": return x * y;
+				case "/": return x / y;
+				case "^": return Math.Pow(x, y);
+				default: return 0;
 			}
 		}
 
