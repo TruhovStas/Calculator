@@ -21,7 +21,7 @@ namespace Calculator.Utilities
 		}
 
 
-		public static bool IsCorrectMathExpression(string Expression)
+		public static bool IsCorrectMathExpression(string expression)
 		{
 			throw new NotImplementedException();
 		}
