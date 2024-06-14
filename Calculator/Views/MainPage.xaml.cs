@@ -34,8 +34,14 @@ namespace Calculator
                 leftListItems.Add(inputText);
                 rightListItems.Add(inputText);
 
+                OutputLabel.Text = $"Вы ввели: {inputText}";
+
                 // Clear the input field
                 InputEntry.Text = string.Empty;
+            }
+            else
+            {
+                OutputLabel.Text = "Введите выражение";
             }
         }
     }

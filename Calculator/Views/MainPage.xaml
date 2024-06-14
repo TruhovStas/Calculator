@@ -1,58 +1,93 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="YourNamespace.MainPage">
+             x:Class="Calculator.MainPage"
+             Title="Calculator">
 
-    <StackLayout Padding="10" Spacing="10">
-        <!-- Text input field -->
-        <Entry x:Name="InputEntry" Placeholder="Введите текст" />
+    <ScrollView>
+        <StackLayout Padding="10" Spacing="10">
+            <!-- Text input field -->
+            <Entry x:Name="InputEntry" Placeholder="Введите текст" />
 
-        <!-- Button -->
-        <Button Text="Выполнить"
-                BackgroundColor="#9966cc"
-                Clicked="OnExecuteButtonClicked" 
-                FontAttributes="Bold"
-                FontSize="Medium"/>
-
-        <!-- Grid to hold the two ListViews with labels and frames -->
-        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*" ColumnSpacing="10">
-
-            <!-- Left Label -->
-            <Label Text="Левый список" 
-                   Grid.Column="0" Grid.Row="0" 
-                   HorizontalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium" />
-
-            <!-- Right Label -->
-            <Label Text="Правый список" 
-                   Grid.Column="1" Grid.Row="0" 
-                   HorizontalOptions="Center"
-                   FontAttributes="Bold"
-                   FontSize="Medium" />
-
-            <!-- Frame for Left ListView -->
-            <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="#9966cc" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="100">
-                <ListView x:Name="LeftListBox">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="{Binding}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <!-- Button -->
+            <Frame CornerRadius="5" Padding="10" Margin="0,10,0,10" HorizontalOptions="Center" WidthRequest="200" HeightRequest="65">
+                <Button Text="Выполнить" 
+                        BackgroundColor="Black"
+                        TextColor="White"
+                        Clicked="OnExecuteButtonClicked" 
+                        FontAttributes="Bold"
+                        FontSize="Medium" />
             </Frame>
 
-            <!-- Frame for Right ListView -->
-            <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="#9966cc" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="100">
-                <ListView x:Name="RightListBox">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="{Binding}" />
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+            <!-- Frame to display the output with scrolling -->
+            <Frame BackgroundColor="#9966cc" CornerRadius="5" Padding="10" Margin="0,10,0,10" HorizontalOptions="Center" WidthRequest="300" HeightRequest="100">
+                <ScrollView>
+                    <StackLayout>
+                        <Label Text="Результат:"
+                   FontSize="Medium"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   LineBreakMode="WordWrap"
+                   MaxLines="5" />
+                        <Label x:Name="OutputLabel" 
+                   Text="Ваш результат здесь"
+                   FontSize="Medium"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   LineBreakMode="WordWrap"
+                   MaxLines="5" />
+                    </StackLayout>
+                </ScrollView>
             </Frame>
 
-        </Grid>
-    </StackLayout>
+            <!-- Grid to hold the two ListViews with labels and frames -->
+            <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*" ColumnSpacing="10">
+                <!-- Left Label -->
+                <Label Text="Левый список" 
+                       Grid.Column="0" Grid.Row="0" 
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="Medium" />
+
+                <!-- Right Label -->
+                <Label Text="Правый список" 
+                       Grid.Column="1" Grid.Row="0" 
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"
+                       FontSize="Medium" />
+
+                <!-- Frame for Left ListView -->
+                <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="#9966cc" BorderColor="Black" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="200">
+                    <ListView x:Name="LeftListBox">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="5,0,0,0">
+                                        <Label Text="{Binding}" FontAttributes="Bold" FontSize="Medium" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Frame>
+
+
+                <!-- Frame for Right ListView -->
+                <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="#9966cc" BorderColor="Black" CornerRadius="5" Padding="0" Margin="0,10,0,0" HeightRequest="200">
+                    <ListView x:Name="RightListBox">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Padding="5,0,0,0">
+                                        <Label Text="{Binding}" FontAttributes="Bold" FontSize="Medium" />
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Frame>
+            </Grid>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
