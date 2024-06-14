@@ -25,17 +25,43 @@ namespace Calculator.Models
 
 		private List<string> Convert2PostfixNotation(List<string> infixEquation) // dont forget to copy list
 		{
-			throw new NotImplementedException();
-			//List<string> output = new List<string>();
-			//Stack<string> symbolBuffer = new Stack<string>(); // needs for temporary keeping symbols 
+			List<string> outputSeparated = new List<string>();
+			Stack<string> stack = new Stack<string>();
+			foreach (string c in new List<string>(infixEquation))
+			{
+				if (standartOperators.Contains(c))
+				{
+					if (stack.Count > 0 && !c.Equals("("))
+					{
+						if (c.Equals(")"))
+						{
+							string s = stack.Pop();
+							while (s != "(")
+							{
+								outputSeparated.Add(s);
+								s = stack.Pop();
+							}
+						}
+						else if (GetOperationPriority(c) > GetOperationPriority(stack.Peek()))
+							stack.Push(c);
+						else
+						{
+							while (stack.Count > 0 && GetOperationPriority(c) <= GetOperationPriority(stack.Peek()))
+								outputSeparated.Add(stack.Pop());
+							stack.Push(c);
+						}
+					}
+					else
+						stack.Push(c);
+				}
+				else
+					outputSeparated.Add(c);
+			}
+			if (stack.Count > 0)
+				foreach (string c in stack)
+					outputSeparated.Add(c);
 
-			//foreach (var token in )
-			//{
-
-			//}
-			//throw new NotImplementedException();
-			////get number must be here
-			//return output;
+			return outputSeparated;
 		}
 
 
@@ -44,7 +70,7 @@ namespace Calculator.Models
 
 
 
-		private double CalculatePostfixNotationEquation()
+		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
 		{
 			Stack<string> stack = new Stack<string>();
 			Queue<string> queue = new Queue<string>(postfixEquation);
