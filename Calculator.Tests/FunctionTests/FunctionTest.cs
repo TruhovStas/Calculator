@@ -19,6 +19,9 @@ namespace Calculator.Tests.FunctionTests
             public IEnumerator<object[]> GetEnumerator()
             {
                 yield return TestCase1();
+                yield return TestCase2();
+                yield return TestCase3();
+                yield return TestCase4();
             }
 
 
@@ -53,6 +56,18 @@ namespace Calculator.Tests.FunctionTests
                 var values = new List<object>
                 {
                     "f", "x+x*(x+x)", new List<string>{"x"}
+                };
+
+                return new object[] { func, values };
+            }
+
+            static object[] TestCase4()
+            {
+                var func = new Function("xyz(x, y, z)=((x + y) * x) + z");
+
+                var values = new List<object>
+                {
+                    "xyz", "((x + y) * x) + z", new List<string>{"x", "y", "z"}
                 };
 
                 return new object[] { func, values };
