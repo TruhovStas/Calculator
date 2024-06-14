@@ -82,36 +82,5 @@ namespace Calculator.Tests.FunctionTests
         {
             Assert.Equal(expected[2], actual.Parameters);
         }
-
-
-
-        //[Fact]
-        //public void TestCase1()
-        //{
-        //    var func = new Function("f(x)=x");
-        //    Assert.Equal("f", func.Name);
-        //    Assert.Equal("x", func.Body);
-        //    Assert.Equal("x", func.Parameters[0]);
-        //}
-
-        //[Fact]
-        //public void TestCase2()
-        //{
-        //    var func = new Function("xxx(xxx,yyy)=xxx*xxx-yyy");
-        //    Assert.Equal("xxx", func.Name);
-        //    Assert.Equal("xxx*xxx-yyy", func.Body);
-        //    Assert.Equal("xxx", func.Parameters[0]);
-        //    Assert.Equal("yyy", func.Parameters[1]);
-        //}
-
-        //[Fact]
-        //public void TestCase3()
-        //{
-        //    var func = new Function("f(x)=x+x*(x+x)");
-        //    Assert.Equal("f", func.Name);
-        //    Assert.Equal("x+x*(x+x)", func.Body);
-        //    Assert.Equal("x", func.Parameters[0]);
-        //}
-
     }
 }
