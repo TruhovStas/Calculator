@@ -34,7 +34,9 @@ namespace Calculator.Models
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
             this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
+
             this.parameters = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+
         }
     }
 }
