@@ -7,6 +7,8 @@
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            Current.UserAppTheme = AppTheme.Dark;
         }
         protected override Window CreateWindow(IActivationState activationState)
         {

@@ -10,13 +10,13 @@
             <Entry x:Name="InputEntry" Placeholder="Введите текст" />
 
             <!-- Button -->
-            <Frame CornerRadius="5" Padding="10" Margin="0,10,0,10" HorizontalOptions="Center" WidthRequest="200" HeightRequest="65">
+            <Frame CornerRadius="5" Padding="10" Margin="0,10,0,10" HorizontalOptions="Center" WidthRequest="200" HeightRequest="65" BackgroundColor="Gray">
                 <Button Text="Выполнить" 
-                        BackgroundColor="Black"
-                        TextColor="White"
-                        Clicked="OnExecuteButtonClicked" 
-                        FontAttributes="Bold"
-                        FontSize="Medium" />
+                    BackgroundColor="Gray"
+                    TextColor="White"
+                    Clicked="OnExecuteButtonClicked" 
+                    FontAttributes="Bold"
+                    FontSize="Medium" />
             </Frame>
 
             <!-- Frame to display the output with scrolling -->
