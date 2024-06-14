@@ -158,7 +158,7 @@ namespace Calculator.Models
 				case "-": return x - y;
 				case "*": return x * y;
 				case "/": return x / y;
-				case "^": return Math.Pow(x, y);
+				case "^": return Math.Pow(y, x);
 				default: return 0;
 			}
 		}
