@@ -44,7 +44,7 @@ namespace Calculator.Models
 
 
 
-		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
+		private double CalculatePostfixNotationEquation()
 		{
 			Stack<string> stack = new Stack<string>();
 			Queue<string> queue = new Queue<string>(postfixEquation);
@@ -137,7 +137,7 @@ namespace Calculator.Models
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1; i < equation.Length &&
-							(Char.IsDigit(equation[i]) || equation[i] == ',' || equation[i] == '.'); i++)
+							(Char.IsDigit(equation[i]) || equation[i] == ','); i++)
 							s += equation[i];
 					else if (Char.IsLetter(equation[pos]))
 						for (int i = pos + 1; i < equation.Length &&
