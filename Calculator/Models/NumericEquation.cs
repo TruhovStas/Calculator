@@ -95,46 +95,9 @@ namespace Calculator.Models
 					double curVal = 0;
 					try
 					{
-
-						switch (str)
-						{
-
-							case "+":
-								{
-									double a = Convert.ToDouble(stack.Pop());
-									double b = Convert.ToDouble(stack.Pop());
-									curVal = a + b;
-									break;
-								}
-							case "-":
-								{
-									double a = Convert.ToDouble(stack.Pop());
-									double b = Convert.ToDouble(stack.Pop());
-									curVal = b - a;
-									break;
-								}
-							case "*":
-								{
-									double a = Convert.ToDouble(stack.Pop());
-									double b = Convert.ToDouble(stack.Pop());
-									curVal = b * a;
-									break;
-								}
-							case "/":
-								{
-									double a = Convert.ToDouble(stack.Pop());
-									double b = Convert.ToDouble(stack.Pop());
-									curVal = b / a;
-									break;
-								}
-							case "^":
-								{
-									double a = Convert.ToDouble(stack.Pop());
-									double b = Convert.ToDouble(stack.Pop());
-									curVal = Math.Pow(Convert.ToDouble(b), Convert.ToDouble(a));
-									break;
-								}
-						}
+						double a = Convert.ToDouble(stack.Pop());
+						double b = Convert.ToDouble(stack.Pop());
+						curVal = ExecuteBinaryOperation(a, b, str);
 					}
 					catch (Exception ex)
 					{
