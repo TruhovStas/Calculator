@@ -46,7 +46,75 @@ namespace Calculator.Models
 
 		private double CalculatePostfixNotationEquation() //this method should calculate such funcs like sin cos abs and take it from Math C#
 		{
-			throw new NotImplementedException();
+			Stack<string> stack = new Stack<string>();
+			Queue<string> queue = new Queue<string>(postfixEquation);
+			string str = queue.Dequeue();
+			while (queue.Count >= 0)
+			{
+				if (!standartOperators.Contains(str))
+				{
+					stack.Push(str);
+					str = queue.Dequeue();
+				}
+				else
+				{
+					double curVal = 0;
+					try
+					{
+
+						switch (str)
+						{
+
+							case "+":
+								{
+									double a = Convert.ToDouble(stack.Pop());
+									double b = Convert.ToDouble(stack.Pop());
+									curVal = a + b;
+									break;
+								}
+							case "-":
+								{
+									double a = Convert.ToDouble(stack.Pop());
+									double b = Convert.ToDouble(stack.Pop());
+									curVal = b - a;
+									break;
+								}
+							case "*":
+								{
+									double a = Convert.ToDouble(stack.Pop());
+									double b = Convert.ToDouble(stack.Pop());
+									curVal = b * a;
+									break;
+								}
+							case "/":
+								{
+									double a = Convert.ToDouble(stack.Pop());
+									double b = Convert.ToDouble(stack.Pop());
+									curVal = b / a;
+									break;
+								}
+							case "^":
+								{
+									double a = Convert.ToDouble(stack.Pop());
+									double b = Convert.ToDouble(stack.Pop());
+									curVal = Math.Pow(Convert.ToDouble(b), Convert.ToDouble(a));
+									break;
+								}
+						}
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine(ex.StackTrace);
+					}
+					stack.Push(curVal.ToString());
+					if (queue.Count > 0)
+						str = queue.Dequeue();
+					else
+						break;
+				}
+
+			}
+			return Convert.ToDouble(stack.Pop());
 		}
 
 
@@ -83,15 +151,36 @@ namespace Calculator.Models
 			return result;
 		}
 
-		private double ExecuteBinaryOperation(double x, double y, char op) => op switch
-		{
-			'+' => x + y,                  //	Сложение
-			'-' => x - y,                  //	Вычитание
-			'*' => x * y,                  //	Умножение
-			'/' => x / y,                  //	Деление
-			'^' => Math.Pow(x, y), //	Степень
-			_ => 0  //	Возвращает, если не был найден подходящий оператор
-		};
-	}
 
+
+		private double ExecuteBinaryOperation(double x, double y, string op)
+		{
+			switch (op)
+			{
+				case "+": return x + y;                  //    Сложение
+				case "-": return x - y;             //    Вычитание
+				case "*": return x * y;                  //    Умножение
+				case "/": return x / y;                  //    Деление
+				case "^": return Math.Pow(x, y); //    Степень
+				default: return 0;  //	Возвращает, если не был найден подходящий оператор
+			}
+		}
+
+
+
+		private int GetOperationPriority(string op)
+		{
+			switch (op)
+			{
+				case "(": return 0;
+				case ")": return 0;
+				case "+": return 1;
+				case "-": return 1;
+				case "*": return 2;
+				case "/": return 2;
+				case "^": return 3;
+				default: return 4;
+			};
+		}
+	}
 }
