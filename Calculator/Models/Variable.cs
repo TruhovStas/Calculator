@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class Variable
+    public class Variable
     {
         private string name;
 

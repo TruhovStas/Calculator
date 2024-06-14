@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class VariableDictionary : IVariableDictionary
+    public class VariableDictionary : IVariableDictionary
     {
         private Dictionary<string, Variable> dict;
         public VariableDictionary()
