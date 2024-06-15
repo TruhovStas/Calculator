@@ -12,7 +12,7 @@ namespace Calculator.Models
 		public List<string> infixEquation { get; private set; }
 		public List<string> postfixEquation { get; private set; }
 
-		private static List<string> standartOperators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
+		private static List<string> standartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
 
 
 		public NumericEquation(string equation)
