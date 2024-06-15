@@ -61,15 +61,19 @@ namespace Calculator.Utilities
                 {
                     letterFound = false;
                 }
-                else if (letterFound && !char.IsLetter(Expression[i]))
+                else if (letterFound && (!char.IsLetter(Expression[i]) || i == Expression.Length - 1))
                 {
                     string before_insertion = Expression.Substring(0, left_border);
 
                     string after_insertion = Expression.Substring(left_border + size);
 
-                    Expression = before_insertion + variableDictionary.GetVariable(Expression.Substring(left_border, size)).Value.ToString() + after_insertion;
+                    string insert = '(' + variableDictionary.GetVariable(Expression.Substring(left_border, size)).Value.ToString() + ')';
+
+                    Expression = before_insertion + insert + after_insertion;
 
                     letterFound = false;
+
+                    i = left_border + insert.Length - 1;
                 }
             }
 
@@ -128,9 +132,13 @@ namespace Calculator.Utilities
                         values.Add(Convert.ToDouble(string_values[j]));
                     }
 
-                    Expression = before_insertion + '(' + functionDictionary.GetFunction(name).ReplaceVariables(values) + ')' + after_insertion;
+                    string insert = '(' + functionDictionary.GetFunction(name).ReplaceVariables(values) + ')';
+
+                    Expression = before_insertion + insert + after_insertion;
 
                     letterFound = false;
+
+                    i = left_border + insert.Length - 1;
                 }
                 else if (letterFound && !char.IsLetter(Expression[i]))
                 {
