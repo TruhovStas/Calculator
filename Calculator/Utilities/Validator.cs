@@ -7,26 +7,33 @@ using System.Threading.Tasks;
 
 namespace Calculator.Utilities
 {
-    public static class Validator
-    {
-        public static bool CanParseUserFunction(string functionDef)
-        {
-            throw new NotImplementedException();
-            // only 1 '='
-            // no special symbols except '='
-            //проерять стоит ли открывающая скобка перед закрывающей 
-            //стоит ли равно после закрывающей скобки
-            //если стоит оператор, то после ли равно
+	public static class Validator
+	{
+		private static List<string> standartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
 
-            //количество переменных = кол-во запятых + 1
-            //колличество переменных слева = кол-ву переменных справа 
+		public static bool CanParseUserFunction(string functionDef)
+		{
+			throw new NotImplementedException();
+			// only 1 '='
+			// no special symbols except '='
+			//проерять стоит ли открывающая скобка перед закрывающей 
+			//стоит ли равно после закрывающей скобки
+			//если стоит оператор, то после ли равно
+
+			//количество переменных = кол-во запятых + 1
+			//колличество переменных слева = кол-ву переменных справа 
 
 		}
 
 
 		public static bool CanParseUserVariable(string variableDef) // xw1 = 5
 		{
-			throw new NotImplementedException();
+			List<string> tokens = SeparateEquation(variableDef);
+			if (tokens.Count != 3) return false;
+			if (CountSymbolOccurrences(tokens, '=') != 1) return false;
+			if (CountNumbers(tokens) != 1) return false;
+			if (CountWords(tokens) != 1) return false;
+			return true;
 			// only 1 '='
 			// only 1 number
 			// only 1 string, numbers included
@@ -40,50 +47,78 @@ namespace Calculator.Utilities
 		}
 
 
-		private static int CountSymbolOccurrences(string str, char symbol)
+		private static int CountSymbolOccurrences(List<string> tokens, char symbol)
 		{
-			return str.ToCharArray().Count(item => item == symbol);
+			return tokens.Count(item => item.Equals(symbol.ToString()));
 		}
 
-		// -1 equals error
-		private static int CountNumbers(string str)
+
+		private static int CountNumbers(List<string> tokens)
 		{
-			int indexOfEq = str.IndexOf('=');
-			if (indexOfEq == -1)
+			int res = 0;
+			foreach (var item in tokens)
 			{
-				return -1;
+				if (int.TryParse(item, out int _)) res++;
 			}
 
-			var trimmed = str.Substring(indexOfEq+1, str.Length - indexOfEq);
+			return res;
+		}
 
-			var partsOfNumber = new List<char>();
 
-			for (int i = 0; i < trimmed.Length; i++)
+		private static int CountWords(List<string> tokens)
+		{
+			int res = 0;
+			foreach (var item in tokens)
 			{
-				if (trimmed[i] == '-' || trimmed[i] == '+')
+				int curLen = 0;
+				foreach (var s in item)
 				{
-					if (partsOfNumber.Contains('-') || partsOfNumber.Contains('+')) return -1;
-
-					partsOfNumber.Add(trimmed[i]);
-					continue;
+					if (char.IsDigit(s) || char.IsLetter(s)) curLen++;
 				}
 
-				if ((trimmed[i] == ',' || trimmed[i] == '.') && (partsOfNumber.Contains('-') || partsOfNumber.Contains('+')))
+				if (curLen == item.Length && OnlyNumbers(item))
 				{
-					if (partsOfNumber.Contains(',') || partsOfNumber.Contains('.')) return -1;
-
-					partsOfNumber.Add(trimmed[i]);
-					continue;
-
+					res++;
 				}
+			}
 
+			return res;
 
+			bool OnlyNumbers(string str)
+			{
+				return str.ToCharArray().Count(char.IsDigit) == str.Length;
 			}
 		}
 
-		private static int CountWords(string str)
+		private static List<string> SeparateEquation(string equation)
 		{
-			throw new NotImplementedException();
+			List<string> result = new List<string>();
+
+			int pos = 0;
+			while (pos < equation.Length)
+			{
+				string s = string.Empty + equation[pos];
+				if (!standartOperators.Contains(equation[pos].ToString()))
+				{
+					if (Char.IsDigit(equation[pos]))
+						for (int i = pos + 1;
+						     i < equation.Length &&
+						     (Char.IsDigit(equation[i]) || equation[i] == ',');
+						     i++)
+							s += equation[i];
+					else if (Char.IsLetter(equation[pos]))
+						for (int i = pos + 1;
+						     i < equation.Length &&
+						     (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
+						     i++)
+							s += equation[i];
+				}
+
+				result.Add(s);
+				pos += s.Length;
+			}
+
+			return result.Where(i => !string.IsNullOrWhiteSpace(i)).ToList();
 		}
-    }
+	}
 }
