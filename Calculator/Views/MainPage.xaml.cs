@@ -1,25 +1,48 @@
-﻿namespace Calculator
+﻿using Microsoft.Maui.Controls;
+using System;
+using System.Collections.ObjectModel;
+
+namespace Calculator
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        // ObservableCollection to hold items for ListViews
+        private ObservableCollection<string> leftListItems;
+        private ObservableCollection<string> rightListItems;
 
         public MainPage()
         {
             InitializeComponent();
+
+            // Initialize the ObservableCollections
+            leftListItems = new ObservableCollection<string>();
+            rightListItems = new ObservableCollection<string>();
+
+            // Set the ItemsSource for ListViews
+            LeftListBox.ItemsSource = leftListItems;
+            RightListBox.ItemsSource = rightListItems;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        private void OnExecuteButtonClicked(object sender, EventArgs e)
         {
-            count++;
+            // Get the input text
+            string inputText = InputEntry.Text;
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            if (!string.IsNullOrWhiteSpace(inputText))
+            {
+                // Add the input text to both ListViews
+                leftListItems.Add(inputText);
+                rightListItems.Add(inputText);
+
+                OutputLabel.Text = $"Вы ввели: {inputText}";
+
+                // Clear the input field
+                InputEntry.Text = string.Empty;
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            {
+                OutputLabel.Text = "Введите выражение";
+            }
         }
     }
-
 }
