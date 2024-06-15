@@ -35,7 +35,7 @@ namespace Calculator.Models
 
             this.name = Expression.Remove(Expression.IndexOf('('));
             this.body = Expression.Substring(Expression.IndexOf('=') + 1);
-            this.parametres = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(') - 1).Replace(" ", "").Split(',').ToList();
+            this.parameters = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(') - 1).Replace(" ", "").Split(',').ToList();
         }
 
         public string ReplaceVariable(List<double> values)
@@ -62,12 +62,12 @@ namespace Calculator.Models
 
                     string after_insertion = replaced_body.Substring(left_border + size);
 
-                    replaced_body = before_insertion + values[parametres.IndexOf(replaced_body.Substring(left_border, size - 1))] + after_insertion;
+                    replaced_body = before_insertion + values[parameters.IndexOf(replaced_body.Substring(left_border, size - 1))] + after_insertion;
 
                     letterFound = false;
                 }
             }
-            
+
             return replaced_body;
         }
     }

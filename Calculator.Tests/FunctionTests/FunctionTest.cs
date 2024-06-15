@@ -10,7 +10,7 @@ namespace Calculator.Tests.FunctionTests
 {
     public class FunctionTest
     {
-        sealed class TestCases: IEnumerable<object[]>
+        sealed class TestCases : IEnumerable<object[]>
         {
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -60,11 +60,11 @@ namespace Calculator.Tests.FunctionTests
 
             static object[] TestCase4()
             {
-                var func = new Function("xyz(x, y, z)=((x + y) * x) + z");
+                var func = new Function("xyz(x,y,z)=((x+y)*x)+z");
 
                 var values = new List<object>
                 {
-                    "xyz", "((x + y) * x) + z", new List<string>{"x", "y", "z"}
+                    "xyz", "((x+y)*x)+z", new List<string>{"x", "y", "z"}
                 };
 
                 return new object[] { func, values };
