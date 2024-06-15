@@ -67,7 +67,7 @@ namespace Calculator.Utilities
 
                     string after_insertion = Expression.Substring(left_border + size);
 
-                    string insert = variableDictionary.GetVariable(Expression.Substring(left_border, size)).Value.ToString();
+                    string insert = '(' + variableDictionary.GetVariable(Expression.Substring(left_border, size)).Value.ToString() + ')';
 
                     Expression = before_insertion + insert + after_insertion;
 
