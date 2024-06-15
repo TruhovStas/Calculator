@@ -46,7 +46,7 @@ namespace Calculator.Utilities
                     left_border = i;
                     size = 1;
                 }
-                else if (letterFound && char.IsLetter(Expression[i]))
+                else if (letterFound && (char.IsLetter(Expression[i]) || char.IsDigit(Expression[i])))
                 {
                     size += 1;
                 }
@@ -85,7 +85,7 @@ namespace Calculator.Utilities
                     left_border = i;
                     size = 1;
                 }
-                else if (letterFound && char.IsLetter(Expression[i]))
+                else if (letterFound && (char.IsLetter(Expression[i]) || char.IsDigit(Expression[i])))
                 {
                     size += 1;
                 }
