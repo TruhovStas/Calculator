@@ -9,21 +9,23 @@ namespace Calculator.Utilities
 {
     public static class Validator
     {
-        public static bool IsCorrectUserFunction(Function function)
+        public static bool CanParseUserFunction(string functionDef)
         {
             throw new NotImplementedException();
         }
 
 
-		public static bool IsCorrectUserVariable(Variable variable)
+		public static bool CanParseUserVariable(string variableDef)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		public static bool IsCorrectMathExpression(string expression)
+		public static bool CanParseMathExpression(string expression)
 		{
 			throw new NotImplementedException();
 		}
+
+		
 	}
 }
