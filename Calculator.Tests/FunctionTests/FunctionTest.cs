@@ -8,10 +8,8 @@ using Calculator.Models;
 
 namespace Calculator.Tests.FunctionTests
 {
-
     public class FunctionTest
     {
-
         sealed class TestCases: IEnumerable<object[]>
         {
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -23,7 +21,6 @@ namespace Calculator.Tests.FunctionTests
                 yield return TestCase3();
                 yield return TestCase4();
             }
-
 
             static object[] TestCase1()
             {
