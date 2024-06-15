@@ -30,8 +30,8 @@ namespace Calculator.Utilities
                 return Expression;
             }
             
-            Expression = ReplaceVariables(Expression);
             Expression = ReplaceFunctions(Expression);
+            Expression = ReplaceVariables(Expression);
 
             return Expression;
         }
