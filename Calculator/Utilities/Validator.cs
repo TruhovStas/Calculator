@@ -33,6 +33,7 @@ namespace Calculator.Utilities
 			if (CountSymbolOccurrences(tokens, '=') != 1) return false;
 			if (CountNumbers(tokens) != 1) return false;
 			if (CountWords(tokens) != 1) return false;
+			if(CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
 			return true;
 			// only 1 '='
 			// only 1 number
@@ -51,6 +52,12 @@ namespace Calculator.Utilities
 		{
 			return tokens.Count(item => item.Equals(symbol.ToString()));
 		}
+
+		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exeptedSymbol)
+		{
+			return tokens.Count(item => !item.Equals(exeptedSymbol.ToString()));
+		}
+
 
 
 		private static int CountNumbers(List<string> tokens)
