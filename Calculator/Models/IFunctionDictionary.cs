@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class VariavleDictionary
+    public interface IFunctionDictionary
     {
+        void Add(Function func);
+        Function GetFunction(string name);
     }
 }
