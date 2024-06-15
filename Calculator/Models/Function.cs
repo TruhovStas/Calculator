@@ -10,13 +10,15 @@ namespace Calculator.Models
     {
         private string name = null;
 
-        private List<string> parametres;
+        private List<string> parameters;
 
         private string body;
 
         public string Name { get { return name; } }
 
         public string Body { get { return body; } }
+
+        public List<string> Parameters { get { return parameters; } }
 
         public Function(string Expression)
         {
@@ -32,7 +34,9 @@ namespace Calculator.Models
         {
             this.name = Expression.Remove(Expression.IndexOf('('), Expression.Length - Expression.IndexOf('('));
             this.body = Expression.Substring(Expression.IndexOf('='), Expression.Length - Expression.IndexOf('='));
-            this.parametres = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+
+            this.parameters = Expression.Substring(Expression.IndexOf('('), Expression.IndexOf(')') - Expression.IndexOf('(')).Replace(" ", "").Split(',').ToList();
+
         }
     }
 }

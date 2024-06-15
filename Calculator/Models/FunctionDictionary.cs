@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Calculator.Models
 {
-    internal class FunctionDictionary : IFunctionDictionary
+
+    public class FunctionDictionary : IFunctionDictionary
+
     {
         private Dictionary<string, Function> dict;
         public FunctionDictionary()
