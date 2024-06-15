@@ -27,7 +27,7 @@ namespace Calculator.Tests.VariableTests
 
                 var value = new List<object>
                 {
-                    "f", 1
+                    "f", 1d
                 };
 
                 return new object[] { variable, value };
@@ -39,7 +39,7 @@ namespace Calculator.Tests.VariableTests
 
                 var value = new List<object>
                 {
-                    "f1", -1
+                    "f1", -1d
                 };
 
                 return new object[] { variable, value };
@@ -47,11 +47,11 @@ namespace Calculator.Tests.VariableTests
 
             static object[] TestCase3()
             {
-                var variable = new Variable("f1f1 =-1.5");
+                var variable = new Variable("f1f1 =-1,5");
 
                 var value = new List<object>
                 {
-                    "f1f1", -1.5
+                    "f1f1", -1.5d
                 };
 
                 return new object[] { variable, value };
