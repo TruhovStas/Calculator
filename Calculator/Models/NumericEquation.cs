@@ -13,12 +13,12 @@ namespace Calculator.Models
 		public List<string> infixEquation { get; private set; }
 		public List<string> postfixEquation { get; private set; }
 
-		private static List<string> standartOperators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
+		private static List<string> standartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
 
 
 		public NumericEquation(string equation)
 		{
-			this.infixEquation = SeparateEquation(equation, standartOperators);
+			this.infixEquation = SeparateEquation(equation);
 			this.postfixEquation = Convert2PostfixNotation(infixEquation);
 		}
 
@@ -62,6 +62,7 @@ namespace Calculator.Models
 				else
 					outputSeparated.Add(c);
 			}
+
 			if (stack.Count > 0)
 				foreach (string c in stack)
 					outputSeparated.Add(c);
@@ -109,6 +110,7 @@ namespace Calculator.Models
 					{
 						Console.WriteLine(ex.StackTrace);
 					}
+
 					stack.Push(curVal.ToString());
 					if (queue.Count > 0)
 						str = queue.Dequeue();
@@ -117,6 +119,7 @@ namespace Calculator.Models
 				}
 
 			}
+
 			return Convert.ToDouble(stack.Pop());
 		}
 
@@ -128,18 +131,19 @@ namespace Calculator.Models
 		/// </summary>
 		/// <param name="equation">Current equation</param>
 		/// <returns>List of tokenized parts of equation</returns>
-		private List<string> SeparateEquation(string equation, List<string> operators)
+		private List<string> SeparateEquation(string equation)
 		{
 			string[] tokens = Regex.Split(equation, @"([*()\^\/]|(?<!E)[\+\-])");
 			tokens = tokens.Where(empty => !string.IsNullOrEmpty(empty)).ToArray();
 
-			var trueTokens = UnitUnaryMinuses(tokens.ToList(), standartOperators);
+			var trueTokens = UnitUnaryMinuses(tokens.ToList());
 			return trueTokens;
 
 		}
 
-		private static List<string> UnitUnaryMinuses(List<string> original, List<string> operators)
+		private static List<string> UnitUnaryMinuses(List<string> original)
 		{
+			List<string> operators = new List<string>() { "+", "-", "*", "/", "^" };
 			List<string> united = new List<string>();
 			for (int i = 0; i < original.Count; i++)
 			{
@@ -161,6 +165,7 @@ namespace Calculator.Models
 						continue;
 					}
 				}
+
 				united.Add(original[i]);
 			}
 
@@ -196,7 +201,7 @@ namespace Calculator.Models
 				case "^": return 3;
 				case "~": return 4;
 				default: return 5;
-			};
+			}
 		}
 	}
 }
