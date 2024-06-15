@@ -55,7 +55,7 @@ namespace Calculator.Tests.FunctionTests
         public static void Test(Function function, List<double> values, string expected)
         {
 
-            var result = function.ReplaceVariable(values);
+            var result = function.ReplaceVariables(values);
 
             Assert.Equal(expected, result);
         }
