@@ -10,7 +10,7 @@ namespace Calculator.Utilities
 {
     public class Parser
     {
-        private VariavleDictionary variableDictionary;
+        private VariableDictionary variableDictionary;
         private FunctionDictionary functionDictionary;
 
         public Parser() { }
@@ -25,7 +25,7 @@ namespace Calculator.Utilities
             {
                 return;
             }
-            variableDictionary = new VariavleDictionary();
+            variableDictionary = new VariableDictionary();
             functionDictionary = new FunctionDictionary();
         }
         // public for testing, should be private

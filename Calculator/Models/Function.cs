@@ -38,7 +38,7 @@ namespace Calculator.Models
             this.parameters = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(') - 1).Replace(" ", "").Split(',').ToList();
         }
 
-        public string ReplaceVariable(List<double> values)
+        public string ReplaceVariables(List<double> values)
         {
             string replaced_body = body;
             int left_border = 0;
