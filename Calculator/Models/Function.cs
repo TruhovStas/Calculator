@@ -40,6 +40,7 @@ namespace Calculator.Models
 
         public string ReplaceVariables(List<double> values)
         {
+            if (values.Count != Parameters.Count) throw new ArgumentException("Количество параметров в функции не совпадает, должно быть " + Parameters.Count);
             string replaced_body = body;
             int left_border = 0;
             int size = 0;
@@ -62,7 +63,7 @@ namespace Calculator.Models
 
                     string after_insertion = replaced_body.Substring(left_border + size);
 
-                    replaced_body = before_insertion + values[parameters.IndexOf(replaced_body.Substring(left_border, size - 1))] + after_insertion;
+                    replaced_body = before_insertion + values[parameters.IndexOf(replaced_body.Substring(left_border, size))] + after_insertion;
 
                     letterFound = false;
                 }

@@ -13,20 +13,27 @@ namespace Calculator.Utilities
         private VariableDictionary variableDictionary;
         private FunctionDictionary functionDictionary;
 
-        public Parser() { }
+        public Parser() 
+        {
+            variableDictionary = new VariableDictionary();
+            functionDictionary = new FunctionDictionary();
+        }
         /// <summary>
         /// Method <c>Parse</c> is replacing all variable with their values and all functions with their definitions.
         /// </summary>
-        public void Parse(string Expression)
+        public string Parse(string Expression)
         {
             Expression = Expression.Replace(" ", "");
             Expression = Expression.Replace(".", ",");
             if (AddInDictionary(Expression)) 
             {
-                return;
+                return Expression;
             }
-            variableDictionary = new VariableDictionary();
-            functionDictionary = new FunctionDictionary();
+            
+            Expression = ReplaceVariables(Expression);
+            Expression = ReplaceFunctions(Expression);
+
+            return Expression;
         }
         // public for testing, should be private
 
@@ -60,7 +67,7 @@ namespace Calculator.Utilities
 
                     string after_insertion = Expression.Substring(left_border + size);
 
-                    Expression = before_insertion + variableDictionary.GetVariable(Expression.Substring(left_border, size)) + after_insertion;
+                    Expression = before_insertion + variableDictionary.GetVariable(Expression.Substring(left_border, size)).Value.ToString() + after_insertion;
 
                     letterFound = false;
                 }
