@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Calculator.Models
@@ -12,12 +13,12 @@ namespace Calculator.Models
 		public List<string> infixEquation { get; private set; }
 		public List<string> postfixEquation { get; private set; }
 
-		private static List<string> standartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
+		private static List<string> standartOperators = new List<string>(new string[] { "(", ")", "+", "-", "*", "/", "^" });
 
 
 		public NumericEquation(string equation)
 		{
-			this.infixEquation = SeparateEquation(equation);
+			this.infixEquation = SeparateEquation(equation, standartOperators);
 			this.postfixEquation = Convert2PostfixNotation(infixEquation);
 		}
 
@@ -93,10 +94,15 @@ namespace Calculator.Models
 				else
 				{
 					double curVal = 0;
+					// as elements can contain "~" it should be convert to "-"
 					try
 					{
-						double a = Convert.ToDouble(stack.Pop());
-						double b = Convert.ToDouble(stack.Pop());
+						string num1 = stack.Pop();
+						double a = Convert.ToDouble(num1.Replace('~', '-'));
+
+						string num2 = stack.Pop();
+						double b = Convert.ToDouble(num2.Replace('~', '-'));
+
 						curVal = ExecuteBinaryOperation(a, b, str);
 					}
 					catch (Exception ex)
@@ -122,42 +128,54 @@ namespace Calculator.Models
 		/// </summary>
 		/// <param name="equation">Current equation</param>
 		/// <returns>List of tokenized parts of equation</returns>
-		private List<string> SeparateEquation(string equation)
+		private List<string> SeparateEquation(string equation, List<string> operators)
 		{
-			List<string> result = new List<string>();
+			string[] tokens = Regex.Split(equation, @"([*()\^\/]|(?<!E)[\+\-])");
+			tokens = tokens.Where(empty => !string.IsNullOrEmpty(empty)).ToArray();
 
-			int pos = 0;
-			while (pos < equation.Length)
-			{
-				string s = string.Empty + equation[pos];
-				if (!standartOperators.Contains(equation[pos].ToString()))
-				{
-					if (Char.IsDigit(equation[pos]))
-						for (int i = pos + 1; i < equation.Length &&
-							(Char.IsDigit(equation[i]) || equation[i] == ','); i++)
-							s += equation[i];
-					else if (Char.IsLetter(equation[pos]))
-						for (int i = pos + 1; i < equation.Length &&
-							(Char.IsLetter(equation[i]) || Char.IsDigit(equation[i])); i++)
-							s += equation[i];
-				}
-				result.Add(s);
-				pos += s.Length;
-			}
+			var trueTokens = UnitUnaryMinuses(tokens.ToList(), standartOperators);
+			return trueTokens;
 
-			return result;
 		}
 
+		private static List<string> UnitUnaryMinuses(List<string> original, List<string> operators)
+		{
+			List<string> united = new List<string>();
+			for (int i = 0; i < original.Count; i++)
+			{
+				// if minus then check if next element number and previous is operator then unite into one element
+				if (original[i] == "-")
+				{
+					try
+					{
+						if (Double.TryParse(original[i + 1], out double nextNum) && operators.Contains(original[i - 1]))
+						{
+							string newElem = "~" + original[i + 1];
+							united.Add(newElem);
+							i++;
+							continue;
+						}
+					}
+					catch (IndexOutOfRangeException e)
+					{
+						continue;
+					}
+				}
+				united.Add(original[i]);
+			}
+
+			return united;
+		}
 
 
 		private double ExecuteBinaryOperation(double x, double y, string op)
 		{
 			switch (op)
 			{
-				case "+": return x + y; 
-				case "-": return x - y;
+				case "+": return x + y;
+				case "-": return y - x;
 				case "*": return x * y;
-				case "/": return x / y;
+				case "/": return y / x;
 				case "^": return Math.Pow(y, x);
 				default: return 0;
 			}
@@ -176,7 +194,8 @@ namespace Calculator.Models
 				case "*": return 2;
 				case "/": return 2;
 				case "^": return 3;
-				default: return 4;
+				case "~": return 4;
+				default: return 5;
 			};
 		}
 	}
