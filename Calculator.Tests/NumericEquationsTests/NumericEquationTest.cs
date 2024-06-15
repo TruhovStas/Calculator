@@ -31,8 +31,8 @@ namespace Calculator.Tests.NumericEquationTests
             static object[] TestCase2()
             {
                 var equation = new NumericEquation("((-12-1,2)+4)*3/(1-2)");
-                var expectedInfixEquation = new List<string> { "(", "(", "-", "12", "-", "1,2", ")", "+", "4", ")", "*", "3", "/", "(", "1", "-", "2", ")" };
-                var expectedPostfixEquation = new List<string> { "12", "-", "1,2", "-", "4", "+", "3", "*", "1", "2", "-", "/" };
+                var expectedInfixEquation = new List<string> { "(", "(", "~12", "-", "1,2", ")", "+", "4", ")", "*", "3", "/", "(", "1", "-", "2", ")" };
+                var expectedPostfixEquation = new List<string> { "~12", "1,2", "-", "4", "+", "3", "*", "1", "2", "-", "/" };
                 return new object[] { equation, expectedInfixEquation, expectedPostfixEquation };
             }
 

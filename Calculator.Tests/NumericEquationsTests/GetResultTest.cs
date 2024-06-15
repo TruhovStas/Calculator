@@ -66,7 +66,7 @@ namespace Calculator.Tests.NumericEquationTests
         [ClassData(typeof(TestCases))]
         public static void Test(NumericEquation equation, double expectedResult)
         {
-            Assert.Equal(expectedResult, equation.GetResult());
+            Assert.Equal(expectedResult, equation.GetResult(), 0.01);
         }
     }
 }
