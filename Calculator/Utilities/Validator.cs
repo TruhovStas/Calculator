@@ -53,12 +53,10 @@ namespace Calculator.Utilities
 			return tokens.Count(item => item.Equals(symbol.ToString()));
 		}
 
-		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exeptedSymbol)
+		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exceptedSymbol)
 		{
 			return tokens.Count(item => !item.Equals(exeptedSymbol.ToString()));
 		}
-
-
 
 		private static int CountNumbers(List<string> tokens)
 		{
