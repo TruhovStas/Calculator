@@ -143,7 +143,7 @@ namespace Calculator.Models
 
 		private static List<string> UnitUnaryMinuses(List<string> original)
 		{
-			List<string> operators = new List<string>() { "+", "-", "*", "/", "^" };
+			List<string> operators = new List<string>() { "+", "-", "*", "/", "^", "(" };
 			List<string> united = new List<string>();
 			for (int i = 0; i < original.Count; i++)
 			{
