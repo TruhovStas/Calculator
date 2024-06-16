@@ -47,16 +47,26 @@ namespace Calculator.Utilities
 		public static bool CanParseUserVariable(string variableDef)
 		{
 			List<string> tokens = SeparateEquation(variableDef);
+			// it can be only 3 tokens in definition
 			if (tokens.Count != 3) return false;
+
+			// only 1 '='
 			if (CountSymbolOccurrences(tokens, '=' , 0, tokens.Count -1) != 1) return false;
+
+			// only 1 number
 			if (CountNumbers(tokens) != 1) return false;
+
+			// only 1 string, numbers included
 			if (CountWords(tokens) != 1) return false;
-			if(CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
+
+			// no special symbols except '='
+			if (CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
+
 			return true;
-			// only 1 '=' +
-			// only 1 number +
-			// only 1 string, numbers included +
-			// no special symbols except '=' +
+
+
+
+
 		}
 
 
