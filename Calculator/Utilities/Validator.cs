@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.UserDataTasks;
-using ABI.Windows.ApplicationModel.Background;
 
 namespace Calculator.Utilities
 {
@@ -42,8 +40,6 @@ namespace Calculator.Utilities
 			return true;
 		}
 
-
-
 		public static bool CanParseUserVariable(string variableDef)
 		{
 			List<string> tokens = SeparateEquation(variableDef);
@@ -63,14 +59,10 @@ namespace Calculator.Utilities
 			if (CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
 
 			return true;
-
-
-
-
 		}
 
 
-		public static bool CanParseMathExpression(string expression) // func12 (x,y) = x + y
+		public static bool CanParseMathExpression(string expression)
 		{
 			throw new NotImplementedException();
 		}
