@@ -18,31 +18,27 @@ namespace Calculator.Utilities
 			List<string> tokens = SeparateEquation(functionDef);
 
 			// only 1 '=' +
-			if (CountSymbolOccurrences(tokens, '=') != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=',0, tokens.Count) != 1) return false;
 
 			// no special symbols except '=' +
 			if (CountSymbolOccurrencesWithExcept(tokens, '=') != 0) return false;
 
-			//кол-во пар скобок целое
+			// correct brackets
 			if (!AllBracketsCorrect(tokens)) return false;
 			if(tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")")) return false;
 
-			//стоит ли равно после закрывающей скобки +
+			// '=' after ')'
 			if (tokens.IndexOf("=") < tokens.IndexOf(")")) return false;
 
-			//если стоит оператор, то после ли равно +
+			// any operator after '='
 			if (tokens.IndexOf("+") < tokens.IndexOf("=") && tokens.IndexOf("+") != -1) return false;
 			if (tokens.IndexOf("-") < tokens.IndexOf("=") && tokens.IndexOf("-") != -1) return false;
 			if (tokens.IndexOf("*") < tokens.IndexOf("=") && tokens.IndexOf("*") != -1) return false;
 			if (tokens.IndexOf("/") < tokens.IndexOf("=") && tokens.IndexOf("/") != -1) return false;
 			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1) return false;
 
-			//количество переменных = кол-во запятых + 1
-			if(CountOfVariables(tokens) != CountSymbolOccurrences(tokens,',') + 1) return false;
-
-			//колличество переменных слева = кол-ву чисел справа 
-			if(CountOfVariables(tokens) != CountNumbers(tokens, tokens.IndexOf("="))) return false;
-
+			// count of variables == count of ',' + 1
+			if(CountOfVariables(tokens) != CountSymbolOccurrences(tokens,',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) return false;
 			return true;
 		}
 
@@ -103,9 +99,9 @@ namespace Calculator.Utilities
 			return true;
 		}
 
-		private static int CountSymbolOccurrences(List<string> tokens, char symbol)
+		private static int CountSymbolOccurrences(List<string> tokens, char symbol, int startIndex, int endIndex)
 		{
-			return tokens.Count(item => item.Equals(symbol.ToString()));
+			return tokens.Skip(startIndex).SkipLast(tokens.Count - endIndex).Count(item => item.Equals(symbol.ToString()));
 		}
 
 		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exceptedSymbol)
