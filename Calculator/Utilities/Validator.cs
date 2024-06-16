@@ -1,6 +1,7 @@
 ﻿using Calculator.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +11,8 @@ namespace Calculator.Utilities
 {
 	public static class Validator
 	{
-		private static readonly List<string> StandartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
+		private static readonly List<string> StandartOperators = new List<string>()
+			{ "(", ")", "+", "-", "*", "/", "^" };
 
 		public static bool CanParseUserFunction(string functionDef)
 		{
@@ -19,65 +21,67 @@ namespace Calculator.Utilities
 			// only 1 '=' +
 			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
 			{
-				return false;
+				throw new ValidationException("В функции больше одного символа '='");
 			}
 
 			// no special symbols except '='
 			if (CountSymbolOccurrencesWithExcept4Function(functionDef, '=') != 0)
 			{
-				return false;
+				throw new ValidationException("В функции обнаружены недопустимые символы");
 			}
 
 			// correct brackets
 			if (!AllBracketsCorrect(tokens))
 			{
-				return false;
+				throw new ValidationException("В функции нарушена последовательность скобок");
 			}
 
 			if (tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")"))
 			{
-				return false;
+				throw new ValidationException("В функции нарушена последовательность скобок");
 			}
 
 
 			// '=' after ')'
 			if (tokens.IndexOf("=") < tokens.IndexOf(")"))
 			{
-				return false;
+				throw new ValidationException("В функции символ '=' стоит неправильно");
 			}
 
 
 			// any operator after '='
 			if (tokens.IndexOf("+") < tokens.IndexOf("=") && tokens.IndexOf("+") != -1)
 			{
-				return false;
+				throw new ValidationException("В функции оператор '+' находится в неправильном положении");
 			}
 
 			if (tokens.IndexOf("-") < tokens.IndexOf("=") && tokens.IndexOf("-") != -1)
 			{
-				return false;
+				throw new ValidationException("В функции оператор '-' находится в неправильном положении");
 			}
 
 			if (tokens.IndexOf("*") < tokens.IndexOf("=") && tokens.IndexOf("*") != -1)
 			{
-				return false;
+				throw new ValidationException("В функции оператор '*' находится в неправильном положении");
 			}
 
 			if (tokens.IndexOf("/") < tokens.IndexOf("=") && tokens.IndexOf("/") != -1)
 			{
-				return false;
+				throw new ValidationException("В функции оператор '/' находится в неправильном положении");
 			}
 
 			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1)
 			{
-				return false;
+				throw new ValidationException("В функции оператор '^' находится в неправильном положении");
 			}
 
 
 			// count of variables == count of ',' + 1
-			if ((CountOfVariables(tokens) != CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) && (tokens.IndexOf(")") - tokens.IndexOf("(") > 1))
+			if ((CountOfVariables(tokens) !=
+			     CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) &&
+			    (tokens.IndexOf(")") - tokens.IndexOf("(") > 1))
 			{
-				return false;
+				throw new ValidationException("В объявлении функции неправильно разделены параметры");
 			}
 
 			return true;
@@ -90,28 +94,28 @@ namespace Calculator.Utilities
 			// only 1 '='
 			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
 			{
-				return false;
+				throw new ValidationException("В переменной больше одного символа '='");
 			}
 
 
 			// only 1 number
 			if (CountNumbers(tokens) != 1)
 			{
-				return false;
+				throw new ValidationException("В переменной обнаружено больше одного числа");
 			}
 
 
 			// only 1 string, numbers included
 			if (CountWords(tokens) != 1)
 			{
-				return false;
+				throw new ValidationException("Обнаружено несколько переменных");
 			}
 
 
 			// no special symbols except '='
 			if (CountSymbolOccurrencesWithExcept(variableDef, '=') != 0)
 			{
-				return false;
+				throw new ValidationException("В переменной обнаружены недопустимые символы");
 			}
 
 
@@ -126,13 +130,13 @@ namespace Calculator.Utilities
 			// no special symbols except operators and ',' and '.'
 			if (!ContainsOnlyAcceptedSymbols(expression, pattern))
 			{
-				return false;
+				throw new ValidationException("В уравнении обнаружены недопустимые символы");
 			}
 
 			// correct brackets
 			if (!AllBracketsCorrect(tokens))
 			{
-				return false;
+				throw new ValidationException("В уравнении нарушена последовательность скобок");
 			}
 
 			return true;
@@ -174,7 +178,8 @@ namespace Calculator.Utilities
 
 		private static int CountSymbolOccurrences(List<string> tokens, char symbol, int startIndex, int endIndex)
 		{
-			return tokens.Skip(startIndex).SkipLast(tokens.Count - endIndex).Count(item => item.Equals(symbol.ToString()));
+			return tokens.Skip(startIndex).SkipLast(tokens.Count - endIndex)
+				.Count(item => item.Equals(symbol.ToString()));
 		}
 
 		private static int CountSymbolOccurrencesWithExcept(string expression, char exceptedSymbol)
@@ -247,15 +252,15 @@ namespace Calculator.Utilities
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1;
-							 i < equation.Length &&
-							 (Char.IsDigit(equation[i]) || equation[i] == ',');
-							 i++)
+						     i < equation.Length &&
+						     (Char.IsDigit(equation[i]) || equation[i] == ',');
+						     i++)
 							s += equation[i];
 					else if (Char.IsLetter(equation[pos]))
 						for (int i = pos + 1;
-							 i < equation.Length &&
-							 (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
-							 i++)
+						     i < equation.Length &&
+						     (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
+						     i++)
 							s += equation[i];
 				}
 
