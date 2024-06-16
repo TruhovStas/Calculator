@@ -63,7 +63,7 @@ namespace Calculator.Models
 
                     string after_insertion = replaced_body.Substring(left_border + size);
 
-                    string replace = values[parameters.IndexOf(replaced_body.Substring(left_border, size))].ToString();
+                    string replace = '(' + values[parameters.IndexOf(replaced_body.Substring(left_border, size))].ToString() + ')';
                     
                     replaced_body = before_insertion + replace + after_insertion;
 
