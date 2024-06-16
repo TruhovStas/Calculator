@@ -18,7 +18,7 @@ namespace Calculator.Utilities
 			List<string> tokens = SeparateEquation(functionDef);
 
 			// only 1 '=' +
-			if (CountSymbolOccurrences(tokens, '=',0, tokens.Count) != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=',0, tokens.Count - 1) != 1) return false;
 
 			// no special symbols except '=' +
 			if (CountSymbolOccurrencesWithExcept(tokens, '=') != 0) return false;
@@ -44,11 +44,11 @@ namespace Calculator.Utilities
 
 
 
-		public static bool CanParseUserVariable(string variableDef) // xw1 = 5
+		public static bool CanParseUserVariable(string variableDef)
 		{
 			List<string> tokens = SeparateEquation(variableDef);
 			if (tokens.Count != 3) return false;
-			if (CountSymbolOccurrences(tokens, '=') != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=' , 0, tokens.Count -1) != 1) return false;
 			if (CountNumbers(tokens) != 1) return false;
 			if (CountWords(tokens) != 1) return false;
 			if(CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
