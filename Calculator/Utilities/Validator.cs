@@ -17,14 +17,14 @@ namespace Calculator.Utilities
 			List<string> tokens = SeparateEquation(functionDef);
 
 			// only 1 '=' +
-			if (CountSymbolOccurrences(tokens, '=',0, tokens.Count - 1) != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1) return false;
 
 			// no special symbols except '=' +
-			if (CountSymbolOccurrencesWithExcept(tokens, '=') != 0) return false;
+			if (CountSymbolOccurrencesWithExcept(functionDef, '=') != 0) return false;
 
 			// correct brackets
 			if (!AllBracketsCorrect(tokens)) return false;
-			if(tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")")) return false;
+			if (tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")")) return false;
 
 			// '=' after ')'
 			if (tokens.IndexOf("=") < tokens.IndexOf(")")) return false;
@@ -37,33 +37,47 @@ namespace Calculator.Utilities
 			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1) return false;
 
 			// count of variables == count of ',' + 1
-			if(CountOfVariables(tokens) != CountSymbolOccurrences(tokens,',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) return false;
+			if (CountOfVariables(tokens) != CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) return false;
 			return true;
 		}
 
 		public static bool CanParseUserVariable(string variableDef)
 		{
 			List<string> tokens = SeparateEquation(variableDef);
-			// it can be only 3 tokens in definition
-			if (tokens.Count != 3) return false;
 
 			// only 1 '='
-			if (CountSymbolOccurrences(tokens, '=' , 0, tokens.Count -1) != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
+			{
+				return false;
+			}
+
 
 			// only 1 number
-			if (CountNumbers(tokens) != 1) return false;
+			if (CountNumbers(tokens) != 1)
+			{
+				return false;
+			}
+
 
 			// only 1 string, numbers included
-			if (CountWords(tokens) != 1) return false;
+			if (CountWords(tokens) != 1)
+			{
+				return false;
+			}
+
 
 			// no special symbols except '='
-			if (CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
+			if (CountSymbolOccurrencesWithExcept(variableDef, '=') != 0)
+			{
+				return false;
+			}
+
 
 			return true;
 		}
 
 
-		public static bool CanParseMathExpression(string expression) //((-12-1,2)+x)*f(1,2)/(1-2)
+		public static bool CanParseMathExpression(string expression)
 		{
 			List<string> tokens = SeparateEquation(expression);
 			string pattern = @"^[A-Za-z0-9\,\.\(\)\+\-\*\\\s]$";
@@ -72,7 +86,7 @@ namespace Calculator.Utilities
 			if (!ContainsOnlyAcceptedSymbols(expression, pattern)) return false;
 
 			// correct brackets
-			if(!AllBracketsCorrect(tokens)) return false;
+			if (!AllBracketsCorrect(tokens)) return false;
 			throw new NotImplementedException();
 		}
 
@@ -96,10 +110,10 @@ namespace Calculator.Utilities
 			Stack<string> brackets = new Stack<string>();
 			foreach (string token in tokens)
 			{
-				if(token == "(") brackets.Push(token);
+				if (token == "(") brackets.Push(token);
 				else if (token == ")")
 				{
-					if(brackets.Count == 0) return false;
+					if (brackets.Count == 0) return false;
 					if (brackets.Peek() == "(")
 					{
 						brackets.Pop();
@@ -115,9 +129,19 @@ namespace Calculator.Utilities
 			return tokens.Skip(startIndex).SkipLast(tokens.Count - endIndex).Count(item => item.Equals(symbol.ToString()));
 		}
 
-		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exceptedSymbol)
+		private static int CountSymbolOccurrencesWithExcept(string expression, char exceptedSymbol)
 		{
-			return tokens.Count(item => !item.Equals(exceptedSymbol.ToString()));
+			string pattern = @"^[A-Za-z0-9\=\-\,\,]$";
+			Regex reg = new Regex(pattern, RegexOptions.Compiled);
+
+			int res = 0;
+			foreach (char s in expression)
+			{
+				var match = reg.Match(s.ToString());
+				if (match.Success) res++;
+			}
+
+			return expression.Length - res;
 		}
 
 		private static int CountNumbers(List<string> tokens, int startIndex = 0)
@@ -125,38 +149,29 @@ namespace Calculator.Utilities
 			int res = 0;
 			for (int i = startIndex; i < tokens.Count; i++)
 			{
-				if (int.TryParse(tokens[i], out int _)) res++;
+				if (double.TryParse(tokens[i], out double _)) res++;
 			}
 
 			return res;
 		}
 
-		private static int CountWords(List<string> tokens)
+		private static int CountWords(List<string> tokens) // check of word contains only from letters
 		{
-			int res = 0;
-			foreach (var item in tokens)
-			{
-				int curLen = 0;
-				foreach (var s in item)
-				{
-					if (char.IsDigit(s) || char.IsLetter(s)) curLen++;
-				}
+			string pattern = @"^[a-zA-Z][a-zA-Z0-9]*$";
+			Regex reg = new Regex(pattern, RegexOptions.Compiled);
 
-				if (curLen == item.Length && OnlyNumbers(item))
-				{
-					res++;
-				}
+			int res = 0;
+			foreach (var s in tokens)
+			{
+				var match = reg.Match(s);
+				if (match.Success) res++;
 			}
 
 			return res;
 
-			bool OnlyNumbers(string str)
-			{
-				return str.ToCharArray().Count(char.IsDigit) == str.Length;
-			}
 		}
 
-		private static List<string> SeparateEquation(string equation)
+		public static List<string> SeparateEquation(string equation)
 		{
 			List<string> result = new List<string>();
 
@@ -168,15 +183,15 @@ namespace Calculator.Utilities
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1;
-						     i < equation.Length &&
-						     (Char.IsDigit(equation[i]) || equation[i] == ',');
-						     i++)
+							 i < equation.Length &&
+							 (Char.IsDigit(equation[i]) || equation[i] == ',');
+							 i++)
 							s += equation[i];
 					else if (Char.IsLetter(equation[pos]))
 						for (int i = pos + 1;
-						     i < equation.Length &&
-						     (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
-						     i++)
+							 i < equation.Length &&
+							 (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
+							 i++)
 							s += equation[i];
 				}
 
@@ -191,7 +206,7 @@ namespace Calculator.Utilities
 		{
 			Regex condition = new Regex(regexPattern, RegexOptions.Compiled);
 			var matches = condition.Matches(expression);
-			if(matches.Count == expression.Length) return true;
+			if (matches.Count == expression.Length) return true;
 			return false;
 		}
 	}
