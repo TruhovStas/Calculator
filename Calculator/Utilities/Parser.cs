@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Calculator.Utilities
 {
@@ -12,6 +13,8 @@ namespace Calculator.Utilities
     {
         private VariableDictionary variableDictionary;
         private FunctionDictionary functionDictionary;
+        public VariableDictionary VariableDictionary { get { return variableDictionary; } }
+        public FunctionDictionary FunctionDictionary { get { return functionDictionary; } }
 
         public Parser() 
         {
@@ -21,13 +24,13 @@ namespace Calculator.Utilities
         /// <summary>
         /// Method <c>Parse</c> is replacing all variable with their values and all functions with their definitions.
         /// </summary>
-        public string Parse(string Expression)
+        public string? Parse(string Expression)
         {
             Expression = Expression.Replace(" ", "");
             Expression = Expression.Replace(".", ",");
             if (AddInDictionary(Expression)) 
             {
-                return Expression;
+                return null;
             }
             
             Expression = ReplaceFunctions(Expression);

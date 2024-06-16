@@ -21,5 +21,10 @@ namespace Calculator.Models
         {
             return dict[name];
         }
+        public List<Variable> GetAllVariables() 
+        {
+            List<Variable> list = [.. dict.Values];
+            return list;
+        }
     }
 }
