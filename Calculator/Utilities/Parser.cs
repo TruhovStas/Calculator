@@ -157,14 +157,21 @@ namespace Calculator.Utilities
         /// </summary>
         private bool AddInDictionary(string Expression)
         {
-
             if (Expression.Contains('=') && Expression.IndexOf('=') != Expression.Length - 1 && Expression.Contains('('))
             {
+                if (!char.IsLetter(Expression[0]))
+                {
+                    throw new ArgumentException("Название функции должно начинаться с буквы");
+                }
                 Function Func = new Function(Expression, functionDictionary);
                 return true;
             }
             else if (Expression.Contains('=') && Expression.IndexOf('=') != Expression.Length - 1 && !Expression.Contains('('))
             {
+                if (!char.IsLetter(Expression[0]))
+                {
+                    throw new ArgumentException("Название переменной должно начинаться с буквы");
+                }
                 Variable Func = new Variable(Expression, variableDictionary);
                 return true;
             }
