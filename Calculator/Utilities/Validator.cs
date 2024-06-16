@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Calculator.Utilities
@@ -62,8 +63,16 @@ namespace Calculator.Utilities
 		}
 
 
-		public static bool CanParseMathExpression(string expression)
+		public static bool CanParseMathExpression(string expression) //((-12-1,2)+x)*f(1,2)/(1-2)
 		{
+			List<string> tokens = SeparateEquation(expression);
+			string pattern = @"^[A-Za-z0-9\,\.\(\)\+\-\*\\\s]$";
+
+			// no special symbols except operators and ',' and '.'
+			if (!ContainsOnlyAcceptedSymbols(expression, pattern)) return false;
+
+			// correct brackets
+			if(!AllBracketsCorrect(tokens)) return false;
 			throw new NotImplementedException();
 		}
 
@@ -122,7 +131,6 @@ namespace Calculator.Utilities
 			return res;
 		}
 
-
 		private static int CountWords(List<string> tokens)
 		{
 			int res = 0;
@@ -177,6 +185,14 @@ namespace Calculator.Utilities
 			}
 
 			return result.Where(i => !string.IsNullOrWhiteSpace(i)).ToList();
+		}
+
+		private static bool ContainsOnlyAcceptedSymbols(string expression, string regexPattern)
+		{
+			Regex condition = new Regex(regexPattern, RegexOptions.Compiled);
+			var matches = condition.Matches(expression);
+			if(matches.Count == expression.Length) return true;
+			return false;
 		}
 	}
 }
