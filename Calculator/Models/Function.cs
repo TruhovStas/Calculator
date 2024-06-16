@@ -38,33 +38,38 @@ namespace Calculator.Models
             this.parameters = Expression.Substring(Expression.IndexOf('(') + 1, Expression.IndexOf(')') - Expression.IndexOf('(') - 1).Replace(" ", "").Split(',').ToList();
         }
 
-        public string ReplaceVariable(List<double> values)
+        public string ReplaceVariables(List<double> values)
         {
+            if (values.Count != Parameters.Count) throw new ArgumentException("Количество параметров в функции не совпадает, должно быть " + Parameters.Count);
             string replaced_body = body;
             int left_border = 0;
             int size = 0;
             bool letterFound = false;
-            for (int i = 0; i < body.Length; ++i)
+            for (int i = 0; i < replaced_body.Length; ++i)
             {
-                if (!letterFound && char.IsLetter(body[i]))
+                if (!letterFound && char.IsLetter(replaced_body[i]))
                 {
                     letterFound = true;
                     left_border = i;
                     size = 1;
                 }
-                else if (letterFound && char.IsLetter(body[i]))
+                else if (letterFound && char.IsLetter(replaced_body[i]))
                 {
                     size += 1;
                 }
-                else if (letterFound && !char.IsLetter(body[i]))
+                if (letterFound && (!char.IsLetter(replaced_body[i]) || i == replaced_body.Length - 1))
                 {
                     string before_insertion = replaced_body.Substring(0, left_border);
 
                     string after_insertion = replaced_body.Substring(left_border + size);
 
-                    replaced_body = before_insertion + values[parameters.IndexOf(replaced_body.Substring(left_border, size - 1))] + after_insertion;
+                    string replace = values[parameters.IndexOf(replaced_body.Substring(left_border, size))].ToString();
+                    
+                    replaced_body = before_insertion + replace + after_insertion;
 
                     letterFound = false;
+
+                    i = left_border + replace.Length - 1;
                 }
             }
 
