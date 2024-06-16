@@ -17,27 +17,69 @@ namespace Calculator.Utilities
 			List<string> tokens = SeparateEquation(functionDef);
 
 			// only 1 '=' +
-			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1) return false;
+			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
+			{
+				return false;
+			}
 
-			// no special symbols except '=' +
-			if (CountSymbolOccurrencesWithExcept(functionDef, '=') != 0) return false;
+			// no special symbols except '='
+			if (CountSymbolOccurrencesWithExcept4Function(functionDef, '=') != 0)
+			{
+				return false;
+			}
 
 			// correct brackets
-			if (!AllBracketsCorrect(tokens)) return false;
-			if (tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")")) return false;
+			if (!AllBracketsCorrect(tokens))
+			{
+				return false;
+			}
+
+			if (tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")"))
+			{
+				return false;
+			}
+
 
 			// '=' after ')'
-			if (tokens.IndexOf("=") < tokens.IndexOf(")")) return false;
+			if (tokens.IndexOf("=") < tokens.IndexOf(")"))
+			{
+				return false;
+			}
+
 
 			// any operator after '='
-			if (tokens.IndexOf("+") < tokens.IndexOf("=") && tokens.IndexOf("+") != -1) return false;
-			if (tokens.IndexOf("-") < tokens.IndexOf("=") && tokens.IndexOf("-") != -1) return false;
-			if (tokens.IndexOf("*") < tokens.IndexOf("=") && tokens.IndexOf("*") != -1) return false;
-			if (tokens.IndexOf("/") < tokens.IndexOf("=") && tokens.IndexOf("/") != -1) return false;
-			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1) return false;
+			if (tokens.IndexOf("+") < tokens.IndexOf("=") && tokens.IndexOf("+") != -1)
+			{
+				return false;
+			}
+
+			if (tokens.IndexOf("-") < tokens.IndexOf("=") && tokens.IndexOf("-") != -1)
+			{
+				return false;
+			}
+
+			if (tokens.IndexOf("*") < tokens.IndexOf("=") && tokens.IndexOf("*") != -1)
+			{
+				return false;
+			}
+
+			if (tokens.IndexOf("/") < tokens.IndexOf("=") && tokens.IndexOf("/") != -1)
+			{
+				return false;
+			}
+
+			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1)
+			{
+				return false;
+			}
+
 
 			// count of variables == count of ',' + 1
-			if (CountOfVariables(tokens) != CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) return false;
+			if ((CountOfVariables(tokens) != CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) && (tokens.IndexOf(")") - tokens.IndexOf("(") > 1))
+			{
+				return false;
+			}
+
 			return true;
 		}
 
@@ -48,7 +90,6 @@ namespace Calculator.Utilities
 			// only 1 '='
 			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
 			{
-				Console.WriteLine($"'=' != 1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -56,7 +97,6 @@ namespace Calculator.Utilities
 			// only 1 number
 			if (CountNumbers(tokens) != 1)
 			{
-				Console.WriteLine($"numbers != 1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -64,7 +104,6 @@ namespace Calculator.Utilities
 			// only 1 string, numbers included
 			if (CountWords(tokens) != 1)
 			{
-				Console.WriteLine($"words !=1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -72,14 +111,12 @@ namespace Calculator.Utilities
 			// no special symbols except '='
 			if (CountSymbolOccurrencesWithExcept(variableDef, '=') != 0)
 			{
-				Console.WriteLine($"spec symbols except '=' !=0. Bad count = {CountSymbolOccurrencesWithExcept(variableDef, '=')}  Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
 
 			return true;
 		}
-
 
 		public static bool CanParseMathExpression(string expression)
 		{
@@ -89,14 +126,12 @@ namespace Calculator.Utilities
 			// no special symbols except operators and ',' and '.'
 			if (!ContainsOnlyAcceptedSymbols(expression, pattern))
 			{
-				Console.WriteLine($"Contain wrong symbol. Expression = {expression}");
 				return false;
 			}
 
 			// correct brackets
 			if (!AllBracketsCorrect(tokens))
 			{
-				Console.WriteLine($"Incorrect brackets. Expression = {expression}");
 				return false;
 			}
 
@@ -157,6 +192,22 @@ namespace Calculator.Utilities
 			return expression.Length - res;
 		}
 
+		private static int CountSymbolOccurrencesWithExcept4Function(string expression, char exceptedSymbol)
+		{
+			string pattern = @"^[A-Za-z0-9\=\-\,\.\+\-\*\/\(\)\s]$";
+			Regex reg = new Regex(pattern, RegexOptions.Compiled);
+
+			int res = 0;
+			foreach (char s in expression)
+			{
+				var match = reg.Match(s.ToString());
+				if (match.Success) res++;
+			}
+
+			return expression.Length - res;
+		}
+
+
 		private static int CountNumbers(List<string> tokens, int startIndex = 0)
 		{
 			int res = 0;
@@ -168,7 +219,7 @@ namespace Calculator.Utilities
 			return res;
 		}
 
-		private static int CountWords(List<string> tokens) // check of word contains only from letters
+		private static int CountWords(List<string> tokens)
 		{
 			string pattern = @"^[a-zA-Z][a-zA-Z0-9]*$";
 			Regex reg = new Regex(pattern, RegexOptions.Compiled);
