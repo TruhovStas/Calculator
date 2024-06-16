@@ -48,6 +48,7 @@ namespace Calculator.Utilities
 			// only 1 '='
 			if (CountSymbolOccurrences(tokens, '=', 0, tokens.Count - 1) != 1)
 			{
+				Console.WriteLine($"'=' != 1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -55,6 +56,7 @@ namespace Calculator.Utilities
 			// only 1 number
 			if (CountNumbers(tokens) != 1)
 			{
+				Console.WriteLine($"numbers != 1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -62,6 +64,7 @@ namespace Calculator.Utilities
 			// only 1 string, numbers included
 			if (CountWords(tokens) != 1)
 			{
+				Console.WriteLine($"words !=1. Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -69,6 +72,7 @@ namespace Calculator.Utilities
 			// no special symbols except '='
 			if (CountSymbolOccurrencesWithExcept(variableDef, '=') != 0)
 			{
+				Console.WriteLine($"spec symbols except '=' !=0. Bad count = {CountSymbolOccurrencesWithExcept(variableDef, '=')}  Expression is {String.Join("|", tokens)}");
 				return false;
 			}
 
@@ -80,14 +84,23 @@ namespace Calculator.Utilities
 		public static bool CanParseMathExpression(string expression)
 		{
 			List<string> tokens = SeparateEquation(expression);
-			string pattern = @"^[A-Za-z0-9\,\.\(\)\+\-\*\\\s]$";
+			string pattern = @"^[A-Za-z0-9\,\.\(\)\+\-\*\/\s]+$";
 
 			// no special symbols except operators and ',' and '.'
-			if (!ContainsOnlyAcceptedSymbols(expression, pattern)) return false;
+			if (!ContainsOnlyAcceptedSymbols(expression, pattern))
+			{
+				Console.WriteLine($"Contain wrong symbol. Expression = {expression}");
+				return false;
+			}
 
 			// correct brackets
-			if (!AllBracketsCorrect(tokens)) return false;
-			throw new NotImplementedException();
+			if (!AllBracketsCorrect(tokens))
+			{
+				Console.WriteLine($"Incorrect brackets. Expression = {expression}");
+				return false;
+			}
+
+			return true;
 		}
 
 
@@ -121,7 +134,7 @@ namespace Calculator.Utilities
 				}
 			}
 
-			return true;
+			return brackets.Count == 0;
 		}
 
 		private static int CountSymbolOccurrences(List<string> tokens, char symbol, int startIndex, int endIndex)
@@ -205,9 +218,8 @@ namespace Calculator.Utilities
 		private static bool ContainsOnlyAcceptedSymbols(string expression, string regexPattern)
 		{
 			Regex condition = new Regex(regexPattern, RegexOptions.Compiled);
-			var matches = condition.Matches(expression);
-			if (matches.Count == expression.Length) return true;
-			return false;
+
+			return (condition.Match(expression).Success);
 		}
 	}
 }
