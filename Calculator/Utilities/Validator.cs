@@ -4,26 +4,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.UserDataTasks;
+using ABI.Windows.ApplicationModel.Background;
 
 namespace Calculator.Utilities
 {
 	public static class Validator
 	{
-		private static List<string> standartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
+		private static readonly List<string> StandartOperators = new List<string>() { "(", ")", "+", "-", "*", "/", "^" };
 
 		public static bool CanParseUserFunction(string functionDef)
 		{
-			throw new NotImplementedException();
-			// only 1 '='
-			// no special symbols except '='
-			//проерять стоит ли открывающая скобка перед закрывающей 
-			//стоит ли равно после закрывающей скобки
-			//если стоит оператор, то после ли равно
+			List<string> tokens = SeparateEquation(functionDef);
+
+			// only 1 '=' +
+			if (CountSymbolOccurrences(tokens, '=') != 1) return false;
+
+			// no special symbols except '=' +
+			if (CountSymbolOccurrencesWithExcept(tokens, '=') != 0) return false;
+
+			//кол-во пар скобок целое
+			if (!AllBracketsCorrect(tokens)) return false;
+			if(tokens.IndexOf("(") == -1 || tokens.IndexOf(")") == -1 || tokens.IndexOf("(") > tokens.IndexOf(")")) return false;
+
+			//стоит ли равно после закрывающей скобки +
+			if (tokens.IndexOf("=") < tokens.IndexOf(")")) return false;
+
+			//если стоит оператор, то после ли равно +
+			if (tokens.IndexOf("+") < tokens.IndexOf("=") && tokens.IndexOf("+") != -1) return false;
+			if (tokens.IndexOf("-") < tokens.IndexOf("=") && tokens.IndexOf("-") != -1) return false;
+			if (tokens.IndexOf("*") < tokens.IndexOf("=") && tokens.IndexOf("*") != -1) return false;
+			if (tokens.IndexOf("/") < tokens.IndexOf("=") && tokens.IndexOf("/") != -1) return false;
+			if (tokens.IndexOf("^") < tokens.IndexOf("=") && tokens.IndexOf("^") != -1) return false;
 
 			//количество переменных = кол-во запятых + 1
-			//колличество переменных слева = кол-ву переменных справа 
+			if(CountOfVariables(tokens) != CountSymbolOccurrences(tokens,',') + 1) return false;
 
+			//колличество переменных слева = кол-ву чисел справа 
+			if(CountOfVariables(tokens) != CountNumbers(tokens, tokens.IndexOf("="))) return false;
+
+			return true;
 		}
+
 
 
 		public static bool CanParseUserVariable(string variableDef) // xw1 = 5
@@ -35,10 +57,10 @@ namespace Calculator.Utilities
 			if (CountWords(tokens) != 1) return false;
 			if(CountSymbolOccurrencesWithExcept(tokens,'=') != 0) return false;
 			return true;
-			// only 1 '='
-			// only 1 number
-			// only 1 string, numbers included
-			// no special symbols except '='
+			// only 1 '=' +
+			// only 1 number +
+			// only 1 string, numbers included +
+			// no special symbols except '=' +
 		}
 
 
@@ -48,6 +70,39 @@ namespace Calculator.Utilities
 		}
 
 
+
+		private static int CountOfVariables(List<string> tokens)
+		{
+			int start = tokens.IndexOf("(");
+			int end = tokens.IndexOf(")");
+			int res = 0;
+			for (int i = start + 1; i < end; i++)
+			{
+				if (tokens[i] != ",") res++;
+			}
+
+			return res;
+		}
+
+		private static bool AllBracketsCorrect(List<string> tokens)
+		{
+			Stack<string> brackets = new Stack<string>();
+			foreach (string token in tokens)
+			{
+				if(token == "(") brackets.Push(token);
+				else if (token == ")")
+				{
+					if(brackets.Count == 0) return false;
+					if (brackets.Peek() == "(")
+					{
+						brackets.Pop();
+					}
+				}
+			}
+
+			return true;
+		}
+
 		private static int CountSymbolOccurrences(List<string> tokens, char symbol)
 		{
 			return tokens.Count(item => item.Equals(symbol.ToString()));
@@ -55,15 +110,15 @@ namespace Calculator.Utilities
 
 		private static int CountSymbolOccurrencesWithExcept(List<string> tokens, char exceptedSymbol)
 		{
-			return tokens.Count(item => !item.Equals(exeptedSymbol.ToString()));
+			return tokens.Count(item => !item.Equals(exceptedSymbol.ToString()));
 		}
 
-		private static int CountNumbers(List<string> tokens)
+		private static int CountNumbers(List<string> tokens, int startIndex = 0)
 		{
 			int res = 0;
-			foreach (var item in tokens)
+			for (int i = startIndex; i < tokens.Count; i++)
 			{
-				if (int.TryParse(item, out int _)) res++;
+				if (int.TryParse(tokens[i], out int _)) res++;
 			}
 
 			return res;
@@ -103,7 +158,7 @@ namespace Calculator.Utilities
 			while (pos < equation.Length)
 			{
 				string s = string.Empty + equation[pos];
-				if (!standartOperators.Contains(equation[pos].ToString()))
+				if (!Validator.StandartOperators.Contains(equation[pos].ToString()))
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1;
