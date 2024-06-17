@@ -1,6 +1,4 @@
 ﻿using Calculator.Utilities;
-using Microsoft.Maui.Controls;
-using System;
 using System.Collections.ObjectModel;
 
 namespace Calculator
