@@ -38,7 +38,6 @@ namespace Calculator.Utilities
 
             return Expression;
         }
-        // public for testing, should be private
 
         /// <summary>
         /// Method <c>ReplaceVariables</c> is replacing all variables with their values.

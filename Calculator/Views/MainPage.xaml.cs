@@ -30,51 +30,58 @@ namespace Calculator
 
         private void OnExecuteButtonClicked(object sender, EventArgs e)
         {
-            // Get the input text
-            string inputText = InputEntry.Text;
-
-            if (!string.IsNullOrWhiteSpace(inputText))
+            try
             {
-                // Clear the input field
-                InputEntry.Text = string.Empty;
+                // Get the input text
+                string inputText = InputEntry.Text;
 
-                string? parsing_result = parser.Parse(inputText);
-
-                if (parsing_result == null) 
+                if (!string.IsNullOrWhiteSpace(inputText))
                 {
-                    OutputLabel.Text = $"Сохранено";
+                    // Clear the input field
+                    InputEntry.Text = string.Empty;
 
-                    leftListItems.Clear();
-                    rightListItems.Clear();
+                    string? parsing_result = parser.Parse(inputText);
 
-                    foreach (var variable in parser.VariableDictionary.GetAllVariables()) 
+                    if (parsing_result == null)
                     {
-                        string variableDefinition = variable.Name + '=' + variable.Value;
-                        leftListItems.Add(variableDefinition);
-                    }
+                        OutputLabel.Text = $"Сохранено";
 
-                    foreach (var function in parser.FunctionDictionary.GetAllFunctions())
-                    {
-                        string functionDefinition = function.Name + '(';
-                        for(int i = 0; i < function.Parameters.Count; ++i) 
+                        leftListItems.Clear();
+                        rightListItems.Clear();
+
+                        foreach (var variable in parser.VariableDictionary.GetAllVariables())
                         {
-                            functionDefinition += function.Parameters[i];
-                            if(i != function.Parameters.Count - 1) functionDefinition += ",";
+                            string variableDefinition = variable.Name + '=' + variable.Value;
+                            leftListItems.Add(variableDefinition);
                         }
-                        functionDefinition += ")=";
-                        functionDefinition += function.Body;
-                        rightListItems.Add(functionDefinition);
+
+                        foreach (var function in parser.FunctionDictionary.GetAllFunctions())
+                        {
+                            string functionDefinition = function.Name + '(';
+                            for (int i = 0; i < function.Parameters.Count; ++i)
+                            {
+                                functionDefinition += function.Parameters[i];
+                                if (i != function.Parameters.Count - 1) functionDefinition += ",";
+                            }
+                            functionDefinition += ")=";
+                            functionDefinition += function.Body;
+                            rightListItems.Add(functionDefinition);
+                        }
+                    }
+                    else
+                    {
+                        double result = Utilities.Calculator.SolveEquation(parsing_result);
+                        OutputLabel.Text = result.ToString();
                     }
                 }
                 else
                 {
-                    double result = Utilities.Calculator.SolveEquation(parsing_result);
-                    OutputLabel.Text = result.ToString();
+                    OutputLabel.Text = "Введите выражение";
                 }
             }
-            else
+            catch(Exception ex) 
             {
-                OutputLabel.Text = "Введите выражение";
+                OutputLabel.Text = ex.Message;
             }
         }
     }
