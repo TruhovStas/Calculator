@@ -28,7 +28,7 @@ namespace Calculator.Tests.ParserTests
             {
                 string function = "x(x,xx,xxx)=x-xx-xxx";
                 string equation = "x(1,2,3)";
-                string expectedResult = "(1-2-3)";
+                string expectedResult = "((1)-(2)-(3))";
                 return new object[] { function, equation, expectedResult };
             }
 
@@ -36,7 +36,7 @@ namespace Calculator.Tests.ParserTests
             {
                 string function = "x(x)=x+x-x";
                 string equation = "x(-1)";
-                string expectedResult = "(-1+(-1)-(-1))";
+                string expectedResult = "((-1)+(-1)-(-1))";
                 return new object[] { function, equation, expectedResult };
             }
         }

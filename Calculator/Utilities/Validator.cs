@@ -78,8 +78,8 @@ namespace Calculator.Utilities
 
 			// count of variables == count of ',' + 1
 			if ((CountOfVariables(tokens) !=
-			     CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) &&
-			    (tokens.IndexOf(")") - tokens.IndexOf("(") > 1))
+				 CountSymbolOccurrences(tokens, ',', tokens.IndexOf("("), tokens.IndexOf(")")) + 1) &&
+				(tokens.IndexOf(")") - tokens.IndexOf("(") > 1))
 			{
 				throw new ValidationException("В объявлении функции неправильно разделены параметры");
 			}
@@ -252,15 +252,15 @@ namespace Calculator.Utilities
 				{
 					if (Char.IsDigit(equation[pos]))
 						for (int i = pos + 1;
-						     i < equation.Length &&
-						     (Char.IsDigit(equation[i]) || equation[i] == ',');
-						     i++)
+							 i < equation.Length &&
+							 (Char.IsDigit(equation[i]) || equation[i] == ',');
+							 i++)
 							s += equation[i];
 					else if (Char.IsLetter(equation[pos]))
 						for (int i = pos + 1;
-						     i < equation.Length &&
-						     (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
-						     i++)
+							 i < equation.Length &&
+							 (Char.IsLetter(equation[i]) || Char.IsDigit(equation[i]));
+							 i++)
 							s += equation[i];
 				}
 
