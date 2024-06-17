@@ -21,6 +21,7 @@ namespace Calculator.Utilities
         {
             Expression = Expression.Replace(" ", "");
             Expression = Expression.Replace(".", ",");
+            Validator.CanParseMathExpression(Expression);
             if (AddInDictionary(Expression)) 
             {
                 return null;

@@ -14,7 +14,13 @@
         }
         public Function GetFunction(string name) 
         {
-            return dict[name];
+            Function func;
+            try
+            {
+                func = dict[name];
+            } 
+            catch { throw new ArgumentException("Функция не найдена в списке."); }
+            return func;
         }
         public List<Function> GetAllFunctions()
         {

@@ -13,7 +13,13 @@
         }
         public Variable GetVariable(string name)
         {
-            return dict[name];
+            Variable func;
+            try
+            {
+                func = dict[name];
+            }
+            catch { throw new ArgumentException("Переменная не найдена в списке."); }
+            return func;
         }
         public List<Variable> GetAllVariables() 
         {
