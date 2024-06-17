@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Calculator.Models;
 
 namespace Calculator.Utilities
 {
-    internal class Calculator
+    public static class Calculator
     {
+        public static double SolveEquation(string eq)
+        {
+            NumericEquation equation = new NumericEquation(eq);
+            double result = equation.GetResult();
+            return result;
+        }
     }
 }
