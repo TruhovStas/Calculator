@@ -25,7 +25,7 @@ namespace Calculator.Tests.FunctionTests
             {
                 var func = new Function("f(x)=x");
                 var values = new List<double> { 1 };
-                string expected = "1";
+                string expected = "(1)";
                 return new object[] { func, values, expected };
             }
 
@@ -34,7 +34,7 @@ namespace Calculator.Tests.FunctionTests
             {
                 var func = new Function("f(x,y,z,i,m,n)=x+y*z-i/m+n");
                 var values = new List<double> { -1, 0, -1.8, 9.99, 5, 3 };
-                string expected = "-1+0*(-1,8)-9,99/5+3";
+                string expected = "(-1)+(0)*(-1,8)-(9,99)/(5)+(3)";
                 return new object[] { func, values, expected };
             }
 
@@ -43,7 +43,7 @@ namespace Calculator.Tests.FunctionTests
             {
                 var func = new Function("f(x,xx,xxx)=x+xx-xxx");
                 var values = new List<double> { -1, -1, -1 };
-                string expected = "-1-1+1";
+                string expected = "(-1)+(-1)-(-1)";
                 return new object[] { func, values, expected };
             }
         }
