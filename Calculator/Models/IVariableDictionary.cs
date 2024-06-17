@@ -10,5 +10,6 @@ namespace Calculator.Models
     {
         void Add(Variable func);
         Variable GetVariable(string name);
+        List<Variable> GetAllVariables();
     }
 }

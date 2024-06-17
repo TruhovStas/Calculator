@@ -10,5 +10,6 @@ namespace Calculator.Models
     {
         void Add(Function func);
         Function GetFunction(string name);
+        List<Function> GetAllFunctions();
     }
 }

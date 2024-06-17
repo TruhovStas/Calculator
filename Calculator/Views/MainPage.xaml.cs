@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Calculator.Utilities;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.ObjectModel;
 
@@ -9,6 +10,8 @@ namespace Calculator
         // ObservableCollection to hold items for ListViews
         private ObservableCollection<string> leftListItems;
         private ObservableCollection<string> rightListItems;
+
+        private Parser parser;
 
         public MainPage()
         {
@@ -21,6 +24,8 @@ namespace Calculator
             // Set the ItemsSource for ListViews
             LeftListBox.ItemsSource = leftListItems;
             RightListBox.ItemsSource = rightListItems;
+
+            parser = new Parser();
         }
 
         private void OnExecuteButtonClicked(object sender, EventArgs e)
@@ -30,14 +35,42 @@ namespace Calculator
 
             if (!string.IsNullOrWhiteSpace(inputText))
             {
-                // Add the input text to both ListViews
-                leftListItems.Add(inputText);
-                rightListItems.Add(inputText);
-
-                OutputLabel.Text = $"Вы ввели: {inputText}";
-
                 // Clear the input field
                 InputEntry.Text = string.Empty;
+
+                string? parsing_result = parser.Parse(inputText);
+
+                if (parsing_result == null) 
+                {
+                    OutputLabel.Text = $"Сохранено";
+
+                    leftListItems.Clear();
+                    rightListItems.Clear();
+
+                    foreach (var variable in parser.VariableDictionary.GetAllVariables()) 
+                    {
+                        string variableDefinition = variable.Name + '=' + variable.Value;
+                        leftListItems.Add(variableDefinition);
+                    }
+
+                    foreach (var function in parser.FunctionDictionary.GetAllFunctions())
+                    {
+                        string functionDefinition = function.Name + '(';
+                        for(int i = 0; i < function.Parameters.Count; ++i) 
+                        {
+                            functionDefinition += function.Parameters[i];
+                            if(i != function.Parameters.Count - 1) functionDefinition += ",";
+                        }
+                        functionDefinition += ")=";
+                        functionDefinition += function.Body;
+                        rightListItems.Add(functionDefinition);
+                    }
+                }
+                else
+                {
+                    double result = Utilities.Calculator.SolveEquation(parsing_result);
+                    OutputLabel.Text = result.ToString();
+                }
             }
             else
             {
